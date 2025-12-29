@@ -5,6 +5,12 @@ import { existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { AppManagerError } from '../../shared/errors.js';
 import { delay } from '../../shared/time.js';
+import {
+  isPortInUse,
+  forceReleasePort,
+  waitForPortReady,
+  killProcessOnPort,
+} from './portAllocator.js';
 
 /**
  * Dev Server 配置
@@ -27,6 +33,9 @@ export interface DevServerConfig {
 
   /** 就绪检测间隔（毫秒） */
   readyPollInterval?: number;
+
+  /** 启动前是否清理端口 */
+  cleanPortBeforeStart?: boolean;
 }
 
 /**
@@ -40,6 +49,8 @@ export interface DevServerInstance {
   process: ResultPromise | null;
   status: 'starting' | 'ready' | 'stopped' | 'error';
   error?: string;
+  /** 进程 PID */
+  pid?: number;
 }
 
 /**
@@ -61,6 +72,7 @@ export class ReactDevServerManager {
       devCommand = 'npm run dev',
       readyTimeout = this.defaultReadyTimeout,
       readyPollInterval = this.defaultReadyPollInterval,
+      cleanPortBeforeStart = true,
     } = config;
 
     // 检查项目路径是否存在
@@ -73,6 +85,20 @@ export class ReactDevServerManager {
     const packageJsonPath = join(absPath, 'package.json');
     if (!existsSync(packageJsonPath)) {
       throw new AppManagerError(`No package.json found in: ${absPath}`);
+    }
+
+    // 启动前检查并清理端口
+    if (cleanPortBeforeStart && (await isPortInUse(port))) {
+      console.log(`   ⚠️ Port ${port} is in use, attempting to release...`);
+      const released = await forceReleasePort(port, { timeout: 5000 });
+      if (!released) {
+        throw new AppManagerError(
+          `Port ${port} is occupied and could not be released`,
+          { port, sceneId },
+          'Manually stop the process using the port or choose a different port'
+        );
+      }
+      console.log(`   ✅ Port ${port} released successfully`);
     }
 
     // 创建实例记录
@@ -96,9 +122,10 @@ export class ReactDevServerManager {
       // 启动 dev server
       const serverProcess = this.startDevProcess(absPath, devCommand, port);
       instance.process = serverProcess;
+      instance.pid = serverProcess.pid;
 
-      // 等待服务就绪
-      await this.waitForReady(instance.url, readyTimeout, readyPollInterval);
+      // 等待服务就绪（使用端口检测 + HTTP 检测双重验证）
+      await this.waitForReady(instance.url, port, readyTimeout, readyPollInterval);
 
       instance.status = 'ready';
       return instance;
@@ -106,9 +133,7 @@ export class ReactDevServerManager {
       instance.status = 'error';
       instance.error = error instanceof Error ? error.message : String(error);
       // 尝试清理进程
-      if (instance.process) {
-        instance.process.kill('SIGTERM');
-      }
+      await this.cleanupProcess(instance);
       throw error;
     }
   }
@@ -122,26 +147,55 @@ export class ReactDevServerManager {
       return;
     }
 
-    if (instance.process) {
-      // 发送 SIGTERM 信号
-      instance.process.kill('SIGTERM');
+    await this.cleanupProcess(instance);
+    this.servers.delete(sceneId);
+  }
 
-      // 等待进程结束（最多 5 秒）
+  /**
+   * 清理进程和端口
+   */
+  private async cleanupProcess(instance: DevServerInstance): Promise<void> {
+    const { process: serverProcess, port, pid } = instance;
+
+    // 1. 首先尝试通过进程句柄终止
+    if (serverProcess) {
       try {
+        serverProcess.kill('SIGTERM');
+
+        // 等待进程优雅退出（最多 3 秒）
         await Promise.race([
-          instance.process,
-          delay(5000).then(() => {
-            // 强制杀死
-            instance.process?.kill('SIGKILL');
-          }),
+          serverProcess.catch(() => {}), // 忽略进程错误
+          delay(3000),
         ]);
       } catch {
-        // 忽略进程退出错误
+        // 忽略
       }
     }
 
+    // 2. 如果有 PID，尝试直接杀死进程
+    if (pid) {
+      try {
+        process.kill(pid, 'SIGTERM');
+        await delay(1000);
+        // 检查进程是否还在
+        try {
+          process.kill(pid, 0); // 检查进程是否存在
+          process.kill(pid, 'SIGKILL'); // 强制杀死
+        } catch {
+          // 进程已退出
+        }
+      } catch {
+        // 忽略
+      }
+    }
+
+    // 3. 最后通过端口强制清理（确保端口被释放）
+    if (await isPortInUse(port)) {
+      console.log(`   🔄 Cleaning up port ${port}...`);
+      await forceReleasePort(port, { timeout: 5000, forceKill: true });
+    }
+
     instance.status = 'stopped';
-    this.servers.delete(sceneId);
   }
 
   /**
@@ -149,7 +203,12 @@ export class ReactDevServerManager {
    */
   async stopAll(): Promise<void> {
     const sceneIds = Array.from(this.servers.keys());
+    console.log(`\n🛑 Stopping ${sceneIds.length} dev server(s)...`);
+
+    // 并行停止所有服务器
     await Promise.all(sceneIds.map((id) => this.stop(id)));
+
+    console.log('   ✅ All dev servers stopped');
   }
 
   /**
@@ -186,15 +245,28 @@ export class ReactDevServerManager {
    * 启动 Dev Server 进程
    */
   private startDevProcess(projectPath: string, devCommand: string, port: number): ResultPromise {
-    const [cmd, ...args] = devCommand.split(' ');
+    // 解析命令，支持在命令后追加端口参数
+    const parts = devCommand.split(' ');
+    const [cmd, ...args] = parts;
 
-    // 设置端口环境变量（支持 Vite、CRA 等）
+    // 检查是否已经包含端口参数
+    const hasPortArg = args.some(
+      (arg) => arg.startsWith('--port') || arg.startsWith('-p')
+    );
+
+    // 如果没有端口参数，自动追加 --port（适配 Vite/CRA 等）
+    if (!hasPortArg) {
+      args.push('--port', String(port));
+    }
+
+    // 设置端口环境变量（作为后备，支持 CRA 等读取 PORT 环境变量的工具）
     const env = {
       ...process.env,
       PORT: String(port),
-      VITE_PORT: String(port),
       BROWSER: 'none', // 禁止自动打开浏览器
     };
+
+    console.log(`   🚀 Running: ${cmd} ${args.join(' ')}`);
 
     const childProcess = execa(cmd, args, {
       cwd: projectPath,
@@ -207,10 +279,31 @@ export class ReactDevServerManager {
   }
 
   /**
-   * 等待服务就绪
+   * 等待服务就绪（端口检测 + HTTP 检测双重验证）
    */
-  private async waitForReady(url: string, timeout: number, interval: number): Promise<void> {
+  private async waitForReady(
+    url: string,
+    port: number,
+    timeout: number,
+    interval: number
+  ): Promise<void> {
     const startTime = Date.now();
+
+    // 第一阶段：等待端口可连接
+    console.log(`   ⏳ Waiting for port ${port} to be ready...`);
+    const portReady = await waitForPortReady(port, timeout / 2, interval);
+
+    if (!portReady) {
+      throw new AppManagerError(
+        `Port ${port} did not become available within ${timeout / 2}ms`,
+        { port, url },
+        'Check if the dev server started correctly'
+      );
+    }
+
+    // 第二阶段：等待 HTTP 服务响应
+    console.log(`   ⏳ Waiting for HTTP service at ${url}...`);
+    const remainingTimeout = timeout - (Date.now() - startTime);
 
     while (Date.now() - startTime < timeout) {
       try {
@@ -229,7 +322,11 @@ export class ReactDevServerManager {
       await delay(interval);
     }
 
-    throw new AppManagerError(`Dev server did not become ready within ${timeout}ms: ${url}`);
+    throw new AppManagerError(
+      `Dev server did not become ready within ${timeout}ms: ${url}`,
+      { port, url, timeout },
+      'Increase readyTimeout or check the application startup logs'
+    );
   }
 }
 

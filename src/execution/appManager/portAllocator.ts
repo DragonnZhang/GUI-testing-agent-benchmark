@@ -1,6 +1,9 @@
 // src/execution/appManager/portAllocator.ts - 端口分配与冲突检测 (T025)
 
 import getPort from 'get-port';
+import { execa } from 'execa';
+import { createConnection } from 'node:net';
+import { delay } from '../../shared/time.js';
 
 /**
  * 已分配的端口记录（进程内全局）
@@ -24,6 +27,176 @@ export interface PortAllocateOptions {
 
   /** 要排除的端口 */
   exclude?: number[];
+}
+
+/**
+ * 检查端口是否正在被使用
+ *
+ * @param port 端口号
+ * @returns 是否被占用
+ */
+export async function isPortInUse(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const socket = createConnection({ port, host: 'localhost' });
+
+    socket.once('connect', () => {
+      socket.destroy();
+      resolve(true); // 端口被占用
+    });
+
+    socket.once('error', () => {
+      socket.destroy();
+      resolve(false); // 端口未被占用
+    });
+
+    // 设置超时
+    socket.setTimeout(1000, () => {
+      socket.destroy();
+      resolve(false);
+    });
+  });
+}
+
+/**
+ * 获取占用指定端口的进程 PID（支持 macOS 和 Linux）
+ *
+ * @param port 端口号
+ * @returns 进程 PID 列表
+ */
+export async function getProcessesByPort(port: number): Promise<number[]> {
+  try {
+    // 使用 lsof 命令查找占用端口的进程
+    const { stdout } = await execa('lsof', ['-i', `:${port}`, '-t'], {
+      reject: false,
+    });
+
+    if (!stdout.trim()) {
+      return [];
+    }
+
+    return stdout
+      .trim()
+      .split('\n')
+      .map((pid) => parseInt(pid, 10))
+      .filter((pid) => !isNaN(pid));
+  } catch {
+    // lsof 可能不可用，尝试使用 netstat（Linux）
+    try {
+      const { stdout } = await execa('ss', ['-tlnp', `sport = :${port}`], {
+        reject: false,
+      });
+
+      const pids: number[] = [];
+      const pidRegex = /pid=(\d+)/g;
+      let match;
+      while ((match = pidRegex.exec(stdout)) !== null) {
+        pids.push(parseInt(match[1], 10));
+      }
+      return pids;
+    } catch {
+      return [];
+    }
+  }
+}
+
+/**
+ * 强制终止占用指定端口的进程
+ *
+ * @param port 端口号
+ * @param signal 信号（默认 SIGTERM，可用 SIGKILL 强制杀死）
+ * @returns 是否成功终止
+ */
+export async function killProcessOnPort(
+  port: number,
+  signal: 'SIGTERM' | 'SIGKILL' = 'SIGTERM'
+): Promise<boolean> {
+  const pids = await getProcessesByPort(port);
+
+  if (pids.length === 0) {
+    return false;
+  }
+
+  for (const pid of pids) {
+    try {
+      process.kill(pid, signal);
+    } catch {
+      // 进程可能已经退出
+    }
+  }
+
+  return true;
+}
+
+/**
+ * 强制释放端口（终止占用进程并等待端口释放）
+ *
+ * @param port 端口号
+ * @param options 选项
+ * @returns 是否成功释放
+ */
+export async function forceReleasePort(
+  port: number,
+  options: {
+    /** 最大等待时间（毫秒） */
+    timeout?: number;
+    /** 检测间隔（毫秒） */
+    pollInterval?: number;
+    /** 是否使用 SIGKILL */
+    forceKill?: boolean;
+  } = {}
+): Promise<boolean> {
+  const { timeout = 10000, pollInterval = 500, forceKill = false } = options;
+
+  // 首先检查端口是否被占用
+  if (!(await isPortInUse(port))) {
+    return true;
+  }
+
+  // 尝试终止进程
+  const signal = forceKill ? 'SIGKILL' : 'SIGTERM';
+  await killProcessOnPort(port, signal);
+
+  // 等待端口释放
+  const startTime = Date.now();
+  while (Date.now() - startTime < timeout) {
+    if (!(await isPortInUse(port))) {
+      return true;
+    }
+
+    // 如果超过一半时间还没释放，使用 SIGKILL
+    if (!forceKill && Date.now() - startTime > timeout / 2) {
+      await killProcessOnPort(port, 'SIGKILL');
+    }
+
+    await delay(pollInterval);
+  }
+
+  return !(await isPortInUse(port));
+}
+
+/**
+ * 等待端口就绪（可连接）
+ *
+ * @param port 端口号
+ * @param timeout 超时时间（毫秒）
+ * @param pollInterval 检测间隔（毫秒）
+ * @returns 是否就绪
+ */
+export async function waitForPortReady(
+  port: number,
+  timeout: number = 60000,
+  pollInterval: number = 500
+): Promise<boolean> {
+  const startTime = Date.now();
+
+  while (Date.now() - startTime < timeout) {
+    if (await isPortInUse(port)) {
+      return true;
+    }
+    await delay(pollInterval);
+  }
+
+  return false;
 }
 
 /**

@@ -13,10 +13,74 @@ import { generateMetricsSummary } from '../../evaluation/scoring/metrics.js';
 import { generateMultiAgentReport } from '../../evaluation/compare/multiAgentReport.js';
 import { renderHtmlReport } from '../../visualization/html/render.js';
 import { generateRunId } from '../../shared/id.js';
-import { PortManager } from '../../execution/appManager/portAllocator.js';
+import { PortManager, forceReleasePort } from '../../execution/appManager/portAllocator.js';
 import { ReactDevServerManager } from '../../execution/appManager/reactDevServer.js';
 import { groupCasesByScene } from '../../data/testCases.js';
 import { findSceneById } from '../../data/scenes.js';
+
+/**
+ * CLI run 命令选项
+ */
+export interface RunCommandOptions {
+  scenes: string;
+  cases: string;
+  output: string;
+  agents: string;
+  concurrency: string;
+  timeout: string;
+  filterCases?: string;
+  listAgents?: boolean;
+}
+
+/**
+ * 设置进程信号处理，确保退出时清理资源
+ */
+function setupCleanupHandlers(
+  devServerManager: ReactDevServerManager,
+  portManager: PortManager
+): () => void {
+  let cleanupInProgress = false;
+
+  const cleanup = async () => {
+    if (cleanupInProgress) return;
+    cleanupInProgress = true;
+
+    console.log('\n\n⚠️ Interrupt received, cleaning up...');
+
+    try {
+      await devServerManager.stopAll();
+      portManager.releaseAll();
+      console.log('✅ Cleanup completed');
+    } catch (error) {
+      console.error('❌ Cleanup failed:', error);
+    }
+
+    process.exit(1);
+  };
+
+  // 处理各种退出信号
+  process.on('SIGINT', cleanup);
+  process.on('SIGTERM', cleanup);
+  process.on('SIGHUP', cleanup);
+
+  // 处理未捕获的异常
+  process.on('uncaughtException', async (error) => {
+    console.error('\n❌ Uncaught exception:', error);
+    await cleanup();
+  });
+
+  process.on('unhandledRejection', async (reason) => {
+    console.error('\n❌ Unhandled rejection:', reason);
+    await cleanup();
+  });
+
+  // 返回清理函数，用于移除监听器
+  return () => {
+    process.removeListener('SIGINT', cleanup);
+    process.removeListener('SIGTERM', cleanup);
+    process.removeListener('SIGHUP', cleanup);
+  };
+}
 
 /**
  * CLI run 命令选项
@@ -123,6 +187,9 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
   const devServerManager = new ReactDevServerManager();
   const sceneAccessUrls = new Map<string, string>();
 
+  // 设置信号处理，确保异常退出时清理资源
+  const removeCleanupHandlers = setupCleanupHandlers(devServerManager, portManager);
+
   try {
     // 启动需要的 Dev Server (T027)
     await startLocalProjectServers(scenes, testCases, portManager, devServerManager, sceneAccessUrls, logger);
@@ -190,9 +257,12 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
     console.log(`\n✅ Run completed! Output: ${artifacts.runDir}`);
     console.log(`   📄 Report: ${artifacts.runDir}/report.html`);
   } finally {
-    // 清理 Dev Server
+    // 清理 Dev Server 和端口
     await devServerManager.stopAll();
     portManager.releaseAll();
+
+    // 移除信号处理器
+    removeCleanupHandlers();
   }
 }
 

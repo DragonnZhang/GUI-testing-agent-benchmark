@@ -25,5 +25,17 @@
       "defect_details": [],
       "defect_level": null
     }
+  },
+  {
+    "case_id": "CASE_003",
+    "ui_scene_id": "SCENE_002",
+    "case_type": "显示缺陷",
+    "case_category": "正例",
+    "prompt": "请检测 Vite React Demo App 首页是否正常显示：1. 页面标题是否存在；2. Vite 和 React logo 是否正常显示",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
   }
 ]
