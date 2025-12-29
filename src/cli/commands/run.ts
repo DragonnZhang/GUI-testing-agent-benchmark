@@ -350,9 +350,9 @@ function buildRunTasks(
       continue;
     }
 
-    // 查找匹配的路由（使用第一个路由）
-    const route = scene.routes[0];
-    const accessUrl = combineUrl(baseUrl, route?.path || '/');
+    // 使用测试用例指定的路由路径
+    const routePath = testCase.route_path || '/';
+    const accessUrl = combineUrl(baseUrl, routePath);
 
     // 为每个 Agent 创建任务
     for (const agentName of agentNames) {

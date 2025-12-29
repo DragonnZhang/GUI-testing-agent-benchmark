@@ -19,6 +19,7 @@ export class DummyAgent extends AgentAdapter {
   };
 
   async runCase(ctx: AgentContext): Promise<AgentResult> {
+    console.log("🚀 ~ DummyAgent ~ runCase ~ ctx:", ctx)
     // 模拟一些处理延迟
     await delay(10);
 

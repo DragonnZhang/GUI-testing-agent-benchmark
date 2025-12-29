@@ -43,7 +43,7 @@ export type Scene = z.infer<typeof SceneSchema>;
 export const GroundTruthSchema = z.object({
   has_defect: z.boolean(),
   defect_details: z.array(z.string()).default([]),
-  defect_level: z.enum(['轻微', '中等', '严重']).nullable().optional(),
+  defect_level: z.enum(['low', 'medium', 'high']).nullable().optional(),
 });
 
 export type GroundTruth = z.infer<typeof GroundTruthSchema>;
@@ -53,6 +53,7 @@ export type GroundTruth = z.infer<typeof GroundTruthSchema>;
 export const TestCaseSchema = z.object({
   case_id: z.string(),
   ui_scene_id: z.string(),
+  route_path: z.string().default('/'), // 指定场景中的具体路由路径
   case_type: z.string(), // 显示缺陷 / 交互缺陷 / ...
   case_category: z.enum(['正例', '反例']),
   prompt: z.string(),

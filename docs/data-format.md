@@ -104,7 +104,7 @@ interface TestCase {
 interface GroundTruth {
   has_defect: boolean;                          // 是否有缺陷
   defect_details: string[];                     // 缺陷详情列表
-  defect_level?: '轻微' | '中等' | '严重' | null; // 严重程度
+  defect_level?: 'low' | 'medium' | 'high' | null; // high程度
 }
 ```
 
@@ -119,7 +119,7 @@ interface GroundTruth {
 | `prompt` | string | ✅ | 发送给 Agent 的测试指令 |
 | `ground_truth.has_defect` | boolean | ✅ | 真实标签，用于计算 TP/FP/FN/TN |
 | `ground_truth.defect_details` | string[] | ✅ | 具体缺陷描述（空数组表示无缺陷） |
-| `ground_truth.defect_level` | enum | ❌ | 缺陷严重程度 |
+| `ground_truth.defect_level` | enum | ❌ | 缺陷high程度 |
 
 ### 示例
 
@@ -137,7 +137,7 @@ interface GroundTruth {
         "登录按钮文字 '立即登录' 被截断为 '立即...'",
         "按钮右侧边距不足"
       ],
-      "defect_level": "中等"
+      "defect_level": "medium"
     }
   },
   {

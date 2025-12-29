@@ -11,7 +11,9 @@
       "readyTimeout": 60000
     },
     "routes": [
-      { "path": "/", "name": "首页" }
+      { "path": "/", "name": "首页" },
+      { "path": "/todo", "name": "Todo 应用" },
+      { "path": "/todo-v2", "name": "Todo 应用 V2" }
     ]
   }
 ]

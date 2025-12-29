@@ -75,7 +75,7 @@ npm run build
     "ground_truth": {
       "has_defect": true,
       "defect_details": ["登录按钮文字被截断"],
-      "defect_level": "中等"
+      "defect_level": "medium"
     }
   },
   {
@@ -98,7 +98,7 @@ npm run build
 - `case_category`: `正例`（无缺陷）或 `反例`（有缺陷）
 - `ground_truth.has_defect`: 真实标签，用于计算指标
 - `defect_details`: 具体缺陷描述（用于语义判定）
-- `defect_level`: 严重程度（轻微/中等/严重）
+- `defect_level`: high程度（low/medium/high）
 
 ## 运行测试
 

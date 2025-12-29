@@ -30,7 +30,7 @@ export interface DetectedDefect {
   /** 缺陷描述 */
   description: string;
 
-  /** 严重程度 */
+  /** high程度 */
   severity?: string;
 
   /** 证据/定位信息 */

@@ -2,6 +2,7 @@
   {
     "case_id": "CASE_001",
     "ui_scene_id": "SCENE_001",
+    "route_path": "/",
     "case_type": "显示缺陷",
     "case_category": "正例",
     "prompt": "请检测 Vite React Demo App 首页是否正常显示：1. 页面标题是否存在；2. Vite 和 React logo 是否正常显示",
@@ -9,6 +10,52 @@
       "has_defect": false,
       "defect_details": [],
       "defect_level": null
+    }
+  },
+  {
+    "case_id": "CASE_002",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/todo",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测 Todo 应用页面是否正常工作：1. 页面标题'Todo 应用'是否显示；2. 任务列表是否正常渲染；3. 添加任务输入框和按钮是否存在；4. 统计信息（总计、已完成、未完成）是否显示",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
+  },
+  {
+    "case_id": "CASE_003",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/todo-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测 Todo 应用 V2 页面：1. 添加按钮是否可以正常点击；2. 已完成和未完成的统计数据是否正确；3. 删除按钮的文字是否正确显示为'删除'；4. 页面底部是否有返回首页的链接",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "添加按钮被禁用，无法点击添加新任务",
+        "已完成和未完成的统计数据计算逻辑错误，显示的数值是反的",
+        "删除按钮的文字错误显示为'保存'而不是'删除'",
+        "页面底部缺少返回首页的链接"
+      ],
+      "defect_level": "high"
+    }
+  },
+  {
+    "case_id": "CASE_004",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/todo-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测 Todo 应用 V2 页面的统计信息是否准确：当前有3个任务，其中1个已完成，2个未完成，请验证页面显示的统计数据是否与实际情况一致",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "统计信息显示错误：已完成显示为2项（实际应为1项），未完成显示为1项（实际应为2项）"
+      ],
+      "defect_level": "medium"
     }
   }
 ]
