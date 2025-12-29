@@ -2,40 +2,56 @@
 
 ## Architecture Overview
 
-This is a **TypeScript CLI framework** for benchmarking UI Testing Agents. The 4-layer architecture:
+**TypeScript CLI framework** for benchmarking UI Testing Agents with a 4-layer architecture:
 
 ```
 Data Layer (data/, src/config/) → Execution Layer (src/execution/) → Evaluation Layer (src/evaluation/) → Visualization (src/visualization/)
 ```
 
-**Key data flow**: `scenes.json` + `test-cases.json` → Agent execution → Binary scoring (TP/FP/FN/TN) → Metrics & HTML report
+**Data flow**: `scenes.json` + `test-cases.json` → Agent execution → Binary scoring (TP/FP/FN/TN) → Metrics & HTML report
 
-## Project Conventions
+## Project Setup
 
-### TypeScript & ESM
-- **ESM modules only** - all imports must use `.js` extension: `import { x } from './foo.js'`
-- Node.js >= 20, TypeScript 5.x with `"module": "NodeNext"`
-- Output to `dist/`, run CLI via `npx uibench` or `node dist/cli/index.js`
+- **Package manager**: pnpm (not npm/yarn)
+- **Runtime**: Node.js >= 20, TypeScript 5.x, ESM-only
+- **Build output**: `dist/`, CLI via `pnpm uibench` or `node dist/cli/index.js`
 
-### Error Handling Pattern
-Use typed errors from `src/shared/errors.ts` with context and suggestions:
+```bash
+pnpm install && pnpm build       # Setup
+pnpm dev                         # Watch mode
+pnpm uibench run -a dummy,noop   # Run benchmark
+```
+
+## TypeScript & ESM Conventions
+
+- **All imports must use `.js` extension**: `import { x } from './foo.js'`
+- Module config: `"module": "NodeNext"` in tsconfig.json
+- No CommonJS - use `import/export` only
+
+## Error Handling Pattern
+
+Use typed errors from `src/shared/errors.ts` with context + suggestion:
+
 ```typescript
 throw new ConfigError(
-  'Validation failed for scenes file',
-  { filePath, validationErrors },
-  'Check docs/data-format.md for the expected schema.'
+  'Validation failed',
+  { filePath, errors },           // context object
+  'Check docs/data-format.md'     // actionable suggestion
 );
 ```
 
-### Schema Validation
-All config/data uses Zod schemas in `src/config/schema.ts`. Key types:
-- `Scene` - UI scene definition (baseUrl or localProject source)
-- `TestCase` - test case with ground_truth.has_defect boolean
-- `RunConfig` - CLI options schema
+Error types: `ConfigError`, `DataLoadError`, `AgentExecutionError`, `TimeoutError`, `AppManagerError`
 
-## Agent Integration Pattern
+## Schema Validation
 
-To add a new agent, follow `src/execution/agent/builtins/dummyAgent.ts`:
+All config uses Zod schemas in `src/config/schema.ts`:
+- `Scene` - UI scene (baseUrl or localProject source)
+- `TestCase` - test case with `ground_truth.has_defect` boolean
+- `RunConfig` - CLI options
+
+## Agent Integration
+
+Extend `AgentAdapter` (see `src/execution/agent/builtins/dummyAgent.ts`):
 
 ```typescript
 export class MyAgent extends AgentAdapter {
@@ -43,60 +59,56 @@ export class MyAgent extends AgentAdapter {
 
   async runCase(ctx: AgentContext): Promise<AgentResult> {
     // ctx.accessUrl - target URL, ctx.prompt - test instruction
-    return {
-      hasDefect: boolean,
-      defects: [{ description: string }],
-      rawOutput: any,  // preserved for debugging
-      errors: [],
-    };
+    return { hasDefect: boolean, defects: [], rawOutput: any, errors: [] };
   }
 }
 ```
 
 Register in `src/execution/agent/builtins/index.ts` via `agentRegistry.register()`.
 
-## CLI Commands
+## UI Scenes (Test Targets)
 
-```bash
-npm run build                    # Compile TypeScript
-uibench run -a dummy,noop        # Run benchmark with agents
-uibench run --list-agents        # List available agents
-uibench eval runs/<id>/          # Re-evaluate existing run
-uibench report runs/<id>/        # Regenerate HTML report
+Local projects go in `data/ui-scenes/` (e.g., `data/ui-scenes/demo-app/`).
+
+Configure in `scenes.json`:
+```json
+{
+  "scene_id": "SCENE_002",
+  "source": {
+    "type": "localProject",
+    "projectPath": "./data/ui-scenes/demo-app",
+    "devCommand": "pnpm dev",
+    "installCommand": "pnpm install"
+  }
+}
 ```
+
+`ReactDevServerManager` auto-starts local projects with dynamic port allocation.
 
 ## Directory Structure
 
 ```
 src/
-├── cli/commands/     # run.ts, eval.ts, report.ts - command implementations
-├── config/           # schema.ts (Zod), load.ts (file loading)
+├── cli/commands/        # run.ts, eval.ts, report.ts
+├── config/              # schema.ts (Zod), load.ts
 ├── execution/
-│   ├── agent/        # adapter.ts (base class), registry.ts, builtins/
-│   ├── appManager/   # React dev server lifecycle management
-│   └── runner/       # runEngine.ts - batch execution with timeout
-├── evaluation/
-│   ├── scoring/      # binaryScorer.ts (TP/FP/FN/TN), metrics.ts
-│   └── compare/      # multiAgentReport.ts
+│   ├── agent/           # adapter.ts, registry.ts, builtins/
+│   ├── appManager/      # reactDevServer.ts, portAllocator.ts
+│   └── runner/          # runEngine.ts, timeouts.ts
+├── evaluation/scoring/  # binaryScorer.ts (TP/FP/FN/TN), metrics.ts
 └── visualization/html/  # template.ts, render.ts
+
+data/ui-scenes/          # Scene definitions + local UI projects
+data/test-cases/         # Test case configs with ground truth
+runs/<runId>/            # Output: metrics.json, score.json, report.html
 ```
 
-## Data Files
+## Modification Patterns
 
-- `data/ui-scenes/scenes.json` - Scene definitions (URLs or local React projects)
-- `data/test-cases/test-case-config.json` - Test cases with ground truth
-- `runs/<runId>/` - Output artifacts (metrics.json, score.json, report.html)
-
-## Key Patterns
-
-1. **Scoring**: Binary classification comparing `ground_truth.has_defect` vs `AgentResult.hasDefect`
-2. **Dev Server**: `ReactDevServerManager` auto-starts local projects with dynamic port allocation
-3. **Registry**: Singleton `agentRegistry` for agent discovery and runtime config
-4. **Artifacts**: `ArtifactsManager` writes all run outputs to timestamped directories
-
-## When Modifying
-
-- New agent: Copy `templateAgent.ts`, implement `runCase()`, register in `index.ts`
-- New metric: Extend `src/evaluation/scoring/metrics.ts`
-- Schema change: Update Zod schema in `schema.ts`, then update `docs/data-format.md`
-- CLI option: Add to commander in `src/cli/index.ts`, handle in command file
+| Task | Files to modify |
+|------|-----------------|
+| New agent | Copy `templateAgent.ts`, implement `runCase()`, register in `builtins/index.ts` |
+| New metric | Extend `src/evaluation/scoring/metrics.ts` |
+| Schema change | Update `schema.ts`, then `docs/data-format.md` |
+| CLI option | Add to `src/cli/index.ts`, handle in command file |
+| New UI scene | Add project to `data/ui-scenes/`, update `scenes.json` |
