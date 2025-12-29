@@ -1,0 +1,29 @@
+[
+  {
+    "case_id": "CASE_001",
+    "ui_scene_id": "SCENE_001",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测该登录页的UI缺陷：1. 登录按钮文字是否居中；2. 输入框聚焦时边框颜色是否变化；3. 忘记密码链接是否右对齐",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "登录按钮文字左对齐（显示缺陷）",
+        "输入框聚焦无边框变化（显示缺陷）"
+      ],
+      "defect_level": "中等"
+    }
+  },
+  {
+    "case_id": "CASE_002",
+    "ui_scene_id": "SCENE_001",
+    "case_type": "显示缺陷",
+    "case_category": "正例",
+    "prompt": "请检测该登录页的UI缺陷：页面标题是否存在",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
+  }
+]

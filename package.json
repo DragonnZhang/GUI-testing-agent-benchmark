@@ -1,0 +1,43 @@
+{
+  "name": "ui-agent-benchmark",
+  "version": "0.1.0",
+  "description": "UI Testing Agent Benchmark Framework - 批量评测 UI Testing Agent 的标准化实验框架",
+  "type": "module",
+  "main": "dist/cli/index.js",
+  "bin": {
+    "uibench": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli/index.js",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "ui-testing",
+    "agent",
+    "benchmark",
+    "evaluation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "execa": "^9.5.2",
+    "get-port": "^7.1.0",
+    "p-limit": "^6.1.0",
+    "pino": "^9.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
+  }
+}

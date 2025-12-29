@@ -137,3 +137,7 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# UI Agent Benchmark - run artifacts (large, not recommended for git)
+runs/
+!runs/.gitkeep

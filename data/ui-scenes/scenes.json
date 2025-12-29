@@ -1,0 +1,14 @@
+[
+  {
+    "scene_id": "SCENE_001",
+    "name": "示例登录页",
+    "description": "用于演示的登录页面场景",
+    "source": {
+      "type": "baseUrl",
+      "baseUrl": "http://localhost:5173"
+    },
+    "routes": [
+      { "path": "/login", "name": "登录页" }
+    ]
+  }
+]
