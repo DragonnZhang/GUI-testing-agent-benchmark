@@ -10,5 +10,20 @@
     "routes": [
       { "path": "/login", "name": "登录页" }
     ]
+  },
+  {
+    "scene_id": "SCENE_002",
+    "name": "Vite React Demo App",
+    "description": "本地 Vite + React 项目，用于 UI 测试",
+    "source": {
+      "type": "localProject",
+      "projectPath": "./data/ui-scenes/demo-app",
+      "devCommand": "pnpm dev",
+      "installCommand": "pnpm install",
+      "readyTimeout": 60000
+    },
+    "routes": [
+      { "path": "/", "name": "首页" }
+    ]
   }
 ]
