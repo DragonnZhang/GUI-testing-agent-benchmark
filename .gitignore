@@ -141,3 +141,9 @@ vite.config.ts.timestamp-*
 # UI Agent Benchmark - run artifacts (large, not recommended for git)
 runs/
 !runs/.gitkeep
+
+# Midscene.js dump files
+midscene_run/dump
+midscene_run/report
+midscene_run/tmp
+midscene_run/log

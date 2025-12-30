@@ -2,19 +2,6 @@
   {
     "case_id": "CASE_001",
     "ui_scene_id": "SCENE_001",
-    "route_path": "/",
-    "case_type": "显示缺陷",
-    "case_category": "正例",
-    "prompt": "请检测 Vite React Demo App 首页是否正常显示：1. 页面标题是否存在；2. Vite 和 React logo 是否正常显示",
-    "ground_truth": {
-      "has_defect": false,
-      "defect_details": [],
-      "defect_level": null
-    }
-  },
-  {
-    "case_id": "CASE_002",
-    "ui_scene_id": "SCENE_001",
     "route_path": "/todo",
     "case_type": "功能缺陷",
     "case_category": "正例",
@@ -26,7 +13,7 @@
     }
   },
   {
-    "case_id": "CASE_003",
+    "case_id": "CASE_002",
     "ui_scene_id": "SCENE_001",
     "route_path": "/todo-v2",
     "case_type": "功能缺陷",
@@ -44,7 +31,7 @@
     }
   },
   {
-    "case_id": "CASE_004",
+    "case_id": "CASE_003",
     "ui_scene_id": "SCENE_001",
     "route_path": "/todo-v2",
     "case_type": "显示缺陷",

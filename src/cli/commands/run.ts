@@ -206,12 +206,32 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
 
     console.log(`\n📋 Executing ${tasks.length} task(s)...`);
 
+    // 初始化所有 Agents
+    const agents = agentNames.map((name) => agentRegistry.getRequired(name));
+    for (const agent of agents) {
+      if (agent.initialize) {
+        logger.info('agent.initialize', { agent: agent.meta.name });
+        await agent.initialize();
+      }
+    }
+
     // 执行批量测试
-    const results = await runEngine(tasks, {
-      concurrency: config.concurrency,
-      runId,
-      logger,
-    });
+    let results;
+    try {
+      results = await runEngine(tasks, {
+        concurrency: config.concurrency,
+        runId,
+        logger,
+      });
+    } finally {
+      // 清理所有 Agents
+      for (const agent of agents) {
+        if (agent.cleanup) {
+          logger.info('agent.cleanup', { agent: agent.meta.name });
+          await agent.cleanup();
+        }
+      }
+    }
 
     // 写入结果 (T029)
     await artifacts.writeRawResults(results);
