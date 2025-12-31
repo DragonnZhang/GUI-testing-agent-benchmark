@@ -66,7 +66,7 @@ export class ArtifactsManager {
   /**
    * 写入规范化结果 (T052: 增加 rawOutput 和 output 用于报告展示)
    */
-  async writeNormalizedResults(results: CaseExecutionResult[]): Promise<void> {
+  async writeNormalizedResults(results: CaseExecutionResult[]): Promise<NormalizedResult[]> {
     // 提取规范化输出
     const normalized: NormalizedResult[] = results.map((r) => ({
       caseId: r.caseId,
@@ -86,6 +86,7 @@ export class ArtifactsManager {
       },
     }));
     await this.writeJson('normalized-results.json', normalized);
+    return normalized;
   }
 
   /**

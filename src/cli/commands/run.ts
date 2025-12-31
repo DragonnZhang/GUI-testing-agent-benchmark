@@ -235,7 +235,7 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
 
     // 写入结果 (T029)
     await artifacts.writeRawResults(results);
-    await artifacts.writeNormalizedResults(results);
+    const normalizedResults = await artifacts.writeNormalizedResults(results);
 
     // 计算判分 (T030)
     const scores = scoreCases(results, testCases);
@@ -255,7 +255,7 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
       scores,
       multiAgentReport,
       testCases,
-      normalizedResults: results,
+      normalizedResults,
     });
     await artifacts.writeReport(htmlReport);
 

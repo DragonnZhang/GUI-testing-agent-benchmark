@@ -37,13 +37,13 @@ export class MidsceneAgent extends AgentAdapter {
     
     this.browser = await puppeteer.launch({
       executablePath,
-      headless: false,
+      headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     this.page = await this.browser.newPage();
     this.agent = new PuppeteerAgent(this.page, {
       generateReport: true,
-      aiActContext: '执行测试用例，关注页面功能和用户体验',
+      aiActContext: '执行测试用例，关注页面显示和交互功能的正确性',
     });
   }
 
@@ -110,7 +110,8 @@ export class MidsceneAgent extends AgentAdapter {
       });
 
       // 执行 AI 测试指令
-      await this.agent.aiAct(ctx.prompt);
+      const result = await this.agent.aiAct(ctx.prompt);
+      console.log("🚀 ~ MidsceneAgent ~ runCase ~ result:", result)
 
       rawOutput = {
         agent: 'midscene',
@@ -119,18 +120,27 @@ export class MidsceneAgent extends AgentAdapter {
         status: 'success',
       };
     } catch (error) {
-      const err = error as Error;
+      const err = error as Error & { errorTask: {
+        status: string,
+        error: Error,
+        errorMessage: string,
+        errorStack: string
+      } };
+
+      console.log("🚀 ~ MidsceneAgent ~ runCase ~ err:", err.errorTask)
+
       errors.push({
-        message: err?.message || 'Unknown error during Midscene execution',
-        stack: err?.stack,
+        message: err?.errorTask?.errorMessage || 'Unknown error during Midscene execution',
+        stack: err?.errorTask?.errorStack,
       });
+      
       hasDefect = true;
       rawOutput = {
         agent: 'midscene',
         accessUrl: ctx.accessUrl,
         prompt: ctx.prompt,
-        status: 'error',
-        error: err?.message,
+        status: err?.errorTask?.status,
+        error: err?.errorTask?.errorMessage,
       };
     }
 
