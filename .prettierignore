@@ -1,0 +1,7 @@
+dist/
+node_modules/
+runs/
+data/
+midscene_run/
+pnpm-lock.yaml
+*.md
