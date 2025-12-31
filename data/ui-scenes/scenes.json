@@ -13,7 +13,17 @@
     "routes": [
       { "path": "/", "name": "首页" },
       { "path": "/todo", "name": "Todo 应用" },
-      { "path": "/todo-v2", "name": "Todo 应用 V2" }
+      { "path": "/todo-v2", "name": "Todo 应用 V2" },
+      { "path": "/login", "name": "登录页面" },
+      { "path": "/login-v2", "name": "登录页面 V2" },
+      { "path": "/cart", "name": "购物车" },
+      { "path": "/cart-v2", "name": "购物车 V2" },
+      { "path": "/profile", "name": "用户资料" },
+      { "path": "/profile-v2", "name": "用户资料 V2" },
+      { "path": "/counter", "name": "计数器" },
+      { "path": "/counter-v2", "name": "计数器 V2" },
+      { "path": "/data-table", "name": "数据表格" },
+      { "path": "/data-table-v2", "name": "数据表格 V2" }
     ]
   }
 ]

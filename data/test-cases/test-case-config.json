@@ -44,5 +44,236 @@
       ],
       "defect_level": "medium"
     }
+  },
+  {
+    "case_id": "CASE_004",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/login",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测登录页面是否正常工作：1. 页面标题'用户登录'是否显示；2. 邮箱输入框的标签是否为'邮箱地址'；3. 密码输入框是否为密码类型（输入时隐藏）；4. 登录按钮文字是否为'登录'；5. 是否有'返回首页'的链接",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
+  },
+  {
+    "case_id": "CASE_005",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/login-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测登录页面 V2：1. 邮箱输入框的标签是否正确显示为'邮箱地址'；2. 密码输入框是否为密码类型（不能明文显示）；3. 登录按钮文字是否为'登录'；4. 登录成功后是否有返回首页的链接",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "邮箱输入框的标签错误显示为'用户名'而不是'邮箱地址'",
+        "密码输入框类型为text，会明文显示密码",
+        "登录按钮文字错误显示为'确认'而不是'登录'",
+        "登录成功后缺少返回首页的链接"
+      ],
+      "defect_level": "high"
+    }
+  },
+  {
+    "case_id": "CASE_006",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/login-v2",
+    "case_type": "安全缺陷",
+    "case_category": "反例",
+    "prompt": "请检测登录页面 V2 的密码安全性：密码输入框在输入时是否会隐藏密码字符，防止被旁人偷窥",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "密码输入框type设置为text而非password，密码会明文显示，存在安全隐患"
+      ],
+      "defect_level": "high"
+    }
+  },
+  {
+    "case_id": "CASE_007",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/cart",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测购物车页面是否正常工作：1. 页面标题是否包含'购物车'；2. 商品列表是否正确显示；3. 数量增减按钮是否可用；4. 商品小计是否等于单价乘以数量；5. 总价计算是否正确",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
+  },
+  {
+    "case_id": "CASE_008",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/cart-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测购物车 V2 页面的价格计算：1. 商品小计是否正确（单价×数量）；2. 总价是否包含正确的运费逻辑；3. 数量增减按钮是否都可用；4. 页面底部是否有返回首页的链接",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "商品小计计算错误，没有乘以数量",
+        "减少数量的按钮被禁用，无法减少商品数量",
+        "页面底部缺少返回首页的链接",
+        "总价计算逻辑有误"
+      ],
+      "defect_level": "high"
+    }
+  },
+  {
+    "case_id": "CASE_009",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/cart-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测购物车 V2 页面：AirPods Pro 单价1999元，数量2个，该商品的小计应该显示为多少？请验证页面显示是否正确",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "AirPods Pro 小计应显示 ¥3,998（1999×2），但页面错误显示为 ¥1,999"
+      ],
+      "defect_level": "high"
+    }
+  },
+  {
+    "case_id": "CASE_010",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/profile",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测用户资料页面是否正常工作：1. 用户名称'张小明'是否正确显示；2. 粉丝数和关注数是否分别显示；3. 编辑资料按钮是否可用；4. 联系方式中邮箱标签是否为'邮箱'；5. 是否有返回首页的链接",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
+  },
+  {
+    "case_id": "CASE_011",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/profile-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测用户资料 V2 页面的信息显示：1. 用户名是否正确显示为'张小明'；2. 粉丝数1024和关注数256是否正确对应显示；3. 邮箱标签是否为'邮箱'；4. 收藏标签是否为'收藏'",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "用户名显示错误，显示的是邮箱地址而不是名字'张小明'",
+        "粉丝数和关注数显示反了：粉丝显示256（实际应为1024），关注显示1024（实际应为256）",
+        "邮箱标签错误显示为'地址'",
+        "收藏标签错误显示为'书签'"
+      ],
+      "defect_level": "medium"
+    }
+  },
+  {
+    "case_id": "CASE_012",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/profile-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测用户资料 V2 页面的交互功能：1. 编辑资料按钮是否可以点击；2. 页面底部是否有返回首页的链接",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "编辑资料按钮被禁用，无法点击",
+        "页面底部缺少返回首页的链接"
+      ],
+      "defect_level": "medium"
+    }
+  },
+  {
+    "case_id": "CASE_013",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/counter",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测计数器页面是否正常工作：1. 页面标题是否包含'计数器'；2. 点击+按钮后计数是否增加；3. 点击-按钮后计数是否减少；4. ×2按钮是否能将数值翻倍；5. 是否有返回首页的链接",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
+  },
+  {
+    "case_id": "CASE_014",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/counter-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测计数器 V2 页面：1. 页面标题是否正确显示为'计数器'；2. 加号按钮是否执行加法操作；3. 减号按钮是否执行减法操作；4. 撤销按钮是否可用",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "页面标题错误显示为'计算器'而不是'计数器'",
+        "加号按钮实际执行的是减法操作，按钮显示和功能不匹配",
+        "减号按钮实际执行的是加法操作，按钮显示和功能不匹配",
+        "撤销按钮被禁用，无法使用撤销功能"
+      ],
+      "defect_level": "high"
+    }
+  },
+  {
+    "case_id": "CASE_015",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/counter-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测计数器 V2 页面的按钮显示：红色按钮显示的是加号还是减号？绿色按钮显示的是加号还是减号？按钮的颜色和符号是否符合常规设计（红色通常表示减少，绿色表示增加）",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "按钮显示与颜色不匹配：红色按钮显示+号，绿色按钮显示-号，与常规UI设计相反"
+      ],
+      "defect_level": "medium"
+    }
+  },
+  {
+    "case_id": "CASE_016",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/data-table",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测数据表格页面是否正常工作：1. 页面标题是否包含'员工数据表'；2. 搜索框是否能按姓名搜索；3. 部门筛选是否正常工作；4. 点击列标题是否能排序；5. 是否有返回首页的链接",
+    "ground_truth": {
+      "has_defect": false,
+      "defect_details": [],
+      "defect_level": null
+    }
+  },
+  {
+    "case_id": "CASE_017",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/data-table-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测数据表格 V2 页面的筛选功能：1. 搜索框输入'张三'是否能找到该员工；2. 状态筛选选择'在职'后是否只显示在职员工；3. 员工状态标签是否正确（在职员工应显示绿色'在职'标签）",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "搜索功能异常：搜索框只能按部门搜索，无法按姓名'张三'搜索",
+        "状态筛选逻辑反了：选择'在职'会显示离职员工，选择'离职'会显示在职员工",
+        "状态标签显示反了：在职员工显示红色'离职'标签，离职员工显示绿色'在职'标签"
+      ],
+      "defect_level": "high"
+    }
+  },
+  {
+    "case_id": "CASE_018",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/data-table-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测数据表格 V2 页面的统计信息：筛选出技术部员工后，'在职'人数统计是否正确？总薪资是否反映筛选后的数据？",
+    "ground_truth": {
+      "has_defect": true,
+      "defect_details": [
+        "在职人数统计显示的是离职人数，而非在职人数",
+        "总薪资统计使用的是全部员工数据，而非筛选后的员工数据"
+      ],
+      "defect_level": "medium"
+    }
   }
 ]
