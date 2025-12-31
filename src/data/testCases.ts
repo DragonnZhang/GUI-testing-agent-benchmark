@@ -1,6 +1,6 @@
 // src/data/testCases.ts - 测试用例加载与关联校验
 
-import type { TestCase, Scene } from '../config/schema.js';
+import type { TestCase } from '../config/schema.js';
 
 /**
  * 按场景 ID 分组测试用例

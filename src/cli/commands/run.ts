@@ -7,7 +7,7 @@ import {
   parseRunConfig,
   validateCasesSceneRefs,
 } from '../../config/load.js';
-import type { Scene, TestCase, RunConfig } from '../../config/schema.js';
+import type { Scene, TestCase } from '../../config/schema.js';
 import { agentRegistry } from '../../execution/agent/registry.js';
 import { registerBuiltinAgents } from '../../execution/agent/builtins/index.js';
 import { runEngine, type RunTask } from '../../execution/runner/runEngine.js';
@@ -18,7 +18,7 @@ import { generateMetricsSummary } from '../../evaluation/scoring/metrics.js';
 import { generateMultiAgentReport } from '../../evaluation/compare/multiAgentReport.js';
 import { renderHtmlReport } from '../../visualization/html/render.js';
 import { generateRunId } from '../../shared/id.js';
-import { PortManager, forceReleasePort } from '../../execution/appManager/portAllocator.js';
+import { PortManager } from '../../execution/appManager/portAllocator.js';
 import { ReactDevServerManager } from '../../execution/appManager/reactDevServer.js';
 import { groupCasesByScene } from '../../data/testCases.js';
 import { findSceneById } from '../../data/scenes.js';

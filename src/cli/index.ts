@@ -5,7 +5,7 @@ import { Command } from 'commander';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
-import { printError, BenchmarkError } from '../shared/errors.js';
+import { printError } from '../shared/errors.js';
 
 // 获取 package.json 版本
 const __filename = fileURLToPath(import.meta.url);

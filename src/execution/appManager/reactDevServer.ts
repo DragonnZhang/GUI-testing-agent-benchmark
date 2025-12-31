@@ -5,12 +5,7 @@ import { existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { AppManagerError } from '../../shared/errors.js';
 import { delay } from '../../shared/time.js';
-import {
-  isPortInUse,
-  forceReleasePort,
-  waitForPortReady,
-  killProcessOnPort,
-} from './portAllocator.js';
+import { isPortInUse, forceReleasePort, waitForPortReady } from './portAllocator.js';
 
 /**
  * Dev Server 配置
@@ -303,7 +298,6 @@ export class ReactDevServerManager {
 
     // 第二阶段：等待 HTTP 服务响应
     console.log(`   ⏳ Waiting for HTTP service at ${url}...`);
-    const remainingTimeout = timeout - (Date.now() - startTime);
 
     while (Date.now() - startTime < timeout) {
       try {
