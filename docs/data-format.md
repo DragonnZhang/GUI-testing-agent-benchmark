@@ -73,7 +73,7 @@ interface Route {
       "type": "localProject",
       "projectPath": "./my-app",
       "devCommand": "npm run dev",
-      "readyTimeout": 120000
+      "readyTimeout": 1200000
     },
     "routes": [
       { "path": "/login" },
@@ -189,7 +189,7 @@ interface GroundTruth {
     { "name": "dummy", "version": "1.0.0", "description": "..." }
   ],
   "concurrency": 2,
-  "timeout": 120000,
+  "timeout": 1200000,
   "startedAt": "2024-01-01T12:00:00.000Z"
 }
 ```

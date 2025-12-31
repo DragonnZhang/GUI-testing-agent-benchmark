@@ -43,7 +43,7 @@ program
   .option('-o, --output <dir>', 'Output directory for runs', 'runs')
   .option('-a, --agents <names>', 'Comma-separated agent names', 'dummy')
   .option('-p, --concurrency <n>', 'Max parallel executions', '1')
-  .option('-t, --timeout <ms>', 'Per-case timeout in milliseconds', '120000')
+  .option('-t, --timeout <ms>', 'Per-case timeout in milliseconds', '1200000')
   .option('--filter-cases <ids>', 'Comma-separated case IDs to run (for retry)')
   .option('--list-agents', 'List available agents and exit')
   .action(wrapAction(async (options) => {

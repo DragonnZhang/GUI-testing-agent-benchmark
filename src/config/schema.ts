@@ -69,7 +69,7 @@ export type TestCase = z.infer<typeof TestCaseSchema>;
 export const AgentConfigSchema = z.object({
   name: z.string(),
   enabled: z.boolean().default(true),
-  timeout: z.number().default(120000), // 单用例超时 ms
+  timeout: z.number().default(1200000), // 单用例超时 ms
   options: z.record(z.unknown()).optional(),
 });
 
@@ -83,7 +83,7 @@ export const RunConfigSchema = z.object({
   outputDir: z.string().default('runs'),
   agents: z.array(z.string()).default(['dummy']),
   concurrency: z.number().min(1).default(1),
-  timeout: z.number().default(120000),
+  timeout: z.number().default(1200000),
   judge: z.enum(['off', 'http']).default('off'),
   judgeUrl: z.string().url().optional(),
 });

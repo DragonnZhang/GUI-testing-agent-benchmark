@@ -38,7 +38,7 @@ npx uibench run [options]
   -a, --agents <names>     Agent 列表，逗号分隔 (默认: dummy)
   -o, --output <dir>       输出目录 (默认: runs)
   -p, --concurrency <n>    并发数 (默认: 1)
-  -t, --timeout <ms>       单用例超时 (默认: 120000)
+  -t, --timeout <ms>       单用例超时 (默认: 1200000)
   --filter-cases <ids>     仅运行指定用例（用于重试）
   --list-agents            列出可用 Agent
 
