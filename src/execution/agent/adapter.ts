@@ -44,4 +44,3 @@ export abstract class AgentAdapter {
    */
   async cleanup?(): Promise<void>;
 }
-

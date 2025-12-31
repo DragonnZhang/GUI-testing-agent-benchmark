@@ -87,4 +87,3 @@ export interface NormalizedResult {
     defect_details: string[];
   };
 }
-

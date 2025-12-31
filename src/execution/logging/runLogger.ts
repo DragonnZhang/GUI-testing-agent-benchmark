@@ -28,9 +28,7 @@ export class RunLogger {
    * @param isDirectory 如果为 true，则 runDirOrLogPath 是目录，日志文件名为 events.ndjson
    */
   constructor(runDirOrLogPath: string, isDirectory = true) {
-    this.logFilePath = isDirectory
-      ? join(runDirOrLogPath, 'events.ndjson')
-      : runDirOrLogPath;
+    this.logFilePath = isDirectory ? join(runDirOrLogPath, 'events.ndjson') : runDirOrLogPath;
   }
 
   /**
@@ -104,4 +102,3 @@ export class RunLogger {
     });
   }
 }
-

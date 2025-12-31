@@ -58,7 +58,9 @@ async function executeTask(task: RunTask, logger: RunLogger): Promise<CaseExecut
       hasDefect: false,
       defects: [],
       rawOutput: null,
-      errors: [{ message: formatError(error), stack: error instanceof Error ? error.stack : undefined }],
+      errors: [
+        { message: formatError(error), stack: error instanceof Error ? error.stack : undefined },
+      ],
     };
 
     logger.error('task.error', {
@@ -154,4 +156,3 @@ export async function runEngine(
 
   return execResults;
 }
-

@@ -522,7 +522,9 @@ export const htmlTemplate = `
 /**
  * 生成排名 HTML
  */
-export function generateRankingHtml(ranking: Array<{ rank: number; agentName: string; f1: number }>): string {
+export function generateRankingHtml(
+  ranking: Array<{ rank: number; agentName: string; f1: number }>
+): string {
   return ranking
     .map((r) => {
       let rankClass = '';

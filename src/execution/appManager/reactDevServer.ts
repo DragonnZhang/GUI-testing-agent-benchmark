@@ -237,7 +237,9 @@ export class ReactDevServerManager {
         timeout: 300000, // 5 分钟超时
       });
     } catch (error) {
-      throw new AppManagerError(`Install failed: ${error instanceof Error ? error.message : String(error)}`);
+      throw new AppManagerError(
+        `Install failed: ${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
 
@@ -250,9 +252,7 @@ export class ReactDevServerManager {
     const [cmd, ...args] = parts;
 
     // 检查是否已经包含端口参数
-    const hasPortArg = args.some(
-      (arg) => arg.startsWith('--port') || arg.startsWith('-p')
-    );
+    const hasPortArg = args.some((arg) => arg.startsWith('--port') || arg.startsWith('-p'));
 
     // 如果没有端口参数，自动追加 --port（适配 Vite/CRA 等）
     if (!hasPortArg) {

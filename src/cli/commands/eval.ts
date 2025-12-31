@@ -36,14 +36,17 @@ export async function evalCommand(runDir: string, options: EvalCommandOptions = 
   }
 
   // 加载测试用例
-  const casesPath = options.casesPath || runConfig.casesPath || 'data/test-cases/test-case-config.json';
+  const casesPath =
+    options.casesPath || runConfig.casesPath || 'data/test-cases/test-case-config.json';
   console.log(`📦 Loading test cases from: ${casesPath}`);
-  
+
   let testCases: TestCase[];
   try {
     testCases = await loadTestCases(resolve(casesPath));
   } catch (error) {
-    console.error(`❌ Failed to load test cases: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(
+      `❌ Failed to load test cases: ${error instanceof Error ? error.message : String(error)}`
+    );
     process.exit(1);
   }
 
@@ -91,7 +94,9 @@ export async function evalCommand(runDir: string, options: EvalCommandOptions = 
       execResults = JSON.parse(content) as CaseExecutionResult[];
       console.log(`📄 Loaded ${execResults.length} results from raw-results.json`);
     } catch (error) {
-      console.error(`❌ Could not load results: ${error instanceof Error ? error.message : String(error)}`);
+      console.error(
+        `❌ Could not load results: ${error instanceof Error ? error.message : String(error)}`
+      );
       process.exit(1);
     }
   }

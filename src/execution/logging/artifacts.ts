@@ -74,12 +74,12 @@ export class ArtifactsManager {
       agentName: r.agentName,
       success: r.success,
       durationMs: r.durationMs,
-      rawOutput: typeof r.result.rawOutput === 'string'
-        ? r.result.rawOutput
-        : JSON.stringify(r.result.rawOutput),
-      error: r.result.errors?.length > 0
-        ? r.result.errors.map((e) => e.message).join('; ')
-        : undefined,
+      rawOutput:
+        typeof r.result.rawOutput === 'string'
+          ? r.result.rawOutput
+          : JSON.stringify(r.result.rawOutput),
+      error:
+        r.result.errors?.length > 0 ? r.result.errors.map((e) => e.message).join('; ') : undefined,
       output: {
         has_defect: r.result.hasDefect,
         defect_details: r.result.defects.map((d) => d.description),
@@ -130,4 +130,3 @@ function getGitCommit(): string | null {
     return null;
   }
 }
-

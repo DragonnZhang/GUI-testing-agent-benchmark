@@ -30,11 +30,11 @@ export class MidsceneAgent extends AgentAdapter {
    * 初始化浏览器和 Midscene Agent
    */
   async initialize(): Promise<void> {
-    console.log("🚀 ~ MidsceneAgent ~ initialize ~ initialize:")
-    
+    console.log('🚀 ~ MidsceneAgent ~ initialize ~ initialize:');
+
     // 获取本地 Chrome 浏览器路径
     const executablePath = this.getChromePath();
-    
+
     this.browser = await puppeteer.launch({
       executablePath,
       headless: true,
@@ -56,22 +56,22 @@ export class MidsceneAgent extends AgentAdapter {
       '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
       '/Applications/Chromium.app/Contents/MacOS/Chromium',
     ];
-    
+
     // Linux
     const linuxPaths = [
       '/usr/bin/google-chrome',
       '/usr/bin/chromium-browser',
       '/snap/bin/chromium',
     ];
-    
+
     // Windows
     const windowsPaths = [
       'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
       'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     ];
-    
+
     const allPaths = [...macPaths, ...linuxPaths, ...windowsPaths];
-    
+
     // 检查文件是否存在
     for (const path of allPaths) {
       try {
@@ -83,7 +83,7 @@ export class MidsceneAgent extends AgentAdapter {
         // 继续检查下一个路径
       }
     }
-    
+
     // 如果都找不到，抛出错误
     throw new Error(
       'Could not find Chrome/Chromium. Please install Chrome or set CHROME_PATH environment variable.'
@@ -111,7 +111,7 @@ export class MidsceneAgent extends AgentAdapter {
 
       // 执行 AI 测试指令
       const result = await this.agent.aiAct(ctx.prompt);
-      console.log("🚀 ~ MidsceneAgent ~ runCase ~ result:", result)
+      console.log('🚀 ~ MidsceneAgent ~ runCase ~ result:', result);
 
       rawOutput = {
         agent: 'midscene',
@@ -120,20 +120,22 @@ export class MidsceneAgent extends AgentAdapter {
         status: 'success',
       };
     } catch (error) {
-      const err = error as Error & { errorTask: {
-        status: string,
-        error: Error,
-        errorMessage: string,
-        errorStack: string
-      } };
+      const err = error as Error & {
+        errorTask: {
+          status: string;
+          error: Error;
+          errorMessage: string;
+          errorStack: string;
+        };
+      };
 
-      console.log("🚀 ~ MidsceneAgent ~ runCase ~ err:", err.errorTask)
+      console.log('🚀 ~ MidsceneAgent ~ runCase ~ err:', err.errorTask);
 
       errors.push({
         message: err?.errorTask?.errorMessage || 'Unknown error during Midscene execution',
         stack: err?.errorTask?.errorStack,
       });
-      
+
       hasDefect = true;
       rawOutput = {
         agent: 'midscene',

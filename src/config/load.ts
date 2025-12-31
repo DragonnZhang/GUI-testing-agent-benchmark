@@ -146,4 +146,3 @@ export function validateCasesSceneRefs(cases: TestCase[], scenes: Scene[]): void
     );
   }
 }
-

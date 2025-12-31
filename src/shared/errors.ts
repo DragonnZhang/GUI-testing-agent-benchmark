@@ -84,7 +84,12 @@ export class BenchmarkError extends Error {
  */
 export class ConfigError extends BenchmarkError {
   constructor(message: string, context?: Record<string, unknown>, suggestion?: string) {
-    super(message, 'CONFIG_ERROR', context, suggestion ?? 'Check your configuration files for syntax errors or missing fields.');
+    super(
+      message,
+      'CONFIG_ERROR',
+      context,
+      suggestion ?? 'Check your configuration files for syntax errors or missing fields.'
+    );
     this.name = 'ConfigError';
   }
 }
@@ -94,7 +99,12 @@ export class ConfigError extends BenchmarkError {
  */
 export class DataLoadError extends BenchmarkError {
   constructor(message: string, context?: Record<string, unknown>, suggestion?: string) {
-    super(message, 'DATA_LOAD_ERROR', context, suggestion ?? 'Verify that the data files exist and contain valid JSON.');
+    super(
+      message,
+      'DATA_LOAD_ERROR',
+      context,
+      suggestion ?? 'Verify that the data files exist and contain valid JSON.'
+    );
     this.name = 'DataLoadError';
   }
 }
@@ -104,7 +114,12 @@ export class DataLoadError extends BenchmarkError {
  */
 export class AgentExecutionError extends BenchmarkError {
   constructor(message: string, context?: Record<string, unknown>, suggestion?: string) {
-    super(message, 'AGENT_EXECUTION_ERROR', context, suggestion ?? 'Check the agent implementation or increase the timeout.');
+    super(
+      message,
+      'AGENT_EXECUTION_ERROR',
+      context,
+      suggestion ?? 'Check the agent implementation or increase the timeout.'
+    );
     this.name = 'AgentExecutionError';
   }
 }
@@ -114,7 +129,12 @@ export class AgentExecutionError extends BenchmarkError {
  */
 export class TimeoutError extends BenchmarkError {
   constructor(message: string, context?: Record<string, unknown>, suggestion?: string) {
-    super(message, 'TIMEOUT_ERROR', context, suggestion ?? 'Increase the timeout value with --timeout option.');
+    super(
+      message,
+      'TIMEOUT_ERROR',
+      context,
+      suggestion ?? 'Increase the timeout value with --timeout option.'
+    );
     this.name = 'TimeoutError';
   }
 }
@@ -124,7 +144,13 @@ export class TimeoutError extends BenchmarkError {
  */
 export class AppManagerError extends BenchmarkError {
   constructor(message: string, context?: Record<string, unknown>, suggestion?: string) {
-    super(message, 'APP_MANAGER_ERROR', context, suggestion ?? 'Ensure the application can be started manually and all dependencies are installed.');
+    super(
+      message,
+      'APP_MANAGER_ERROR',
+      context,
+      suggestion ??
+        'Ensure the application can be started manually and all dependencies are installed.'
+    );
     this.name = 'AppManagerError';
   }
 }
@@ -134,7 +160,12 @@ export class AppManagerError extends BenchmarkError {
  */
 export class AgentRegistryError extends BenchmarkError {
   constructor(message: string, context?: Record<string, unknown>, suggestion?: string) {
-    super(message, 'AGENT_REGISTRY_ERROR', context, suggestion ?? 'Check that the agent is registered correctly with registerAgent().');
+    super(
+      message,
+      'AGENT_REGISTRY_ERROR',
+      context,
+      suggestion ?? 'Check that the agent is registered correctly with registerAgent().'
+    );
     this.name = 'AgentRegistryError';
   }
 }
@@ -205,11 +236,14 @@ export function printInfo(message: string): void {
  */
 export function formatZodError(error: unknown): string {
   if (error && typeof error === 'object' && 'issues' in error) {
-    const issues = (error as { issues: Array<{ path: (string | number)[]; message: string }> }).issues;
-    return issues.map(issue => {
-      const path = issue.path.join('.');
-      return path ? `${path}: ${issue.message}` : issue.message;
-    }).join('\n');
+    const issues = (error as { issues: Array<{ path: (string | number)[]; message: string }> })
+      .issues;
+    return issues
+      .map((issue) => {
+        const path = issue.path.join('.');
+        return path ? `${path}: ${issue.message}` : issue.message;
+      })
+      .join('\n');
   }
   return String(error);
 }

@@ -27,7 +27,7 @@ import type { AgentContext, AgentResult, DetectedDefect } from '../types.js';
 export class TemplateAgent extends AgentAdapter {
   // 元信息：必须定义
   readonly meta: AgentMeta = {
-    name: 'template',  // Agent 唯一标识符（在 CLI --agents 中使用）
+    name: 'template', // Agent 唯一标识符（在 CLI --agents 中使用）
     version: '1.0.0',
     description: '这是一个 Agent 模板，展示如何接入新的 UI 测试 Agent',
     supportedDefectTypes: ['display', 'interaction', 'other'],

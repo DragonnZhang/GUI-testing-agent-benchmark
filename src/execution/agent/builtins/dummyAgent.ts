@@ -14,12 +14,13 @@ export class DummyAgent extends AgentAdapter {
   readonly meta: AgentMeta = {
     name: 'dummy',
     version: '1.0.0',
-    description: 'A dummy agent for testing the benchmark pipeline. Returns predictable results based on prompt keywords.',
+    description:
+      'A dummy agent for testing the benchmark pipeline. Returns predictable results based on prompt keywords.',
     supportedDefectTypes: ['display', 'interaction', 'other'],
   };
 
   async runCase(ctx: AgentContext): Promise<AgentResult> {
-    console.log("🚀 ~ DummyAgent ~ runCase ~ ctx:", ctx)
+    console.log('🚀 ~ DummyAgent ~ runCase ~ ctx:', ctx);
     // 模拟一些处理延迟
     await delay(10);
 

@@ -187,9 +187,7 @@ export function generateMetricsSummary(
   // 获取所有用例 ID（去重）
   const caseIds = new Set(scores.map((s) => s.caseId));
 
-  const byAgent = agentNames.map((name) =>
-    calculateAgentMetrics(scores, name, detailSummaries)
-  );
+  const byAgent = agentNames.map((name) => calculateAgentMetrics(scores, name, detailSummaries));
 
   return {
     runId,

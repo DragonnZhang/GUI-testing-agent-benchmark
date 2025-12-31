@@ -23,7 +23,10 @@ export interface ReportCommandOptions {
  *
  * 从已有的 metrics.json 和 score.json 重新生成 report.html
  */
-export async function reportCommand(runDir: string, options: ReportCommandOptions = {}): Promise<void> {
+export async function reportCommand(
+  runDir: string,
+  options: ReportCommandOptions = {}
+): Promise<void> {
   const absRunDir = resolve(runDir);
   console.log(`\n📄 Regenerating report for: ${absRunDir}`);
 
@@ -45,7 +48,9 @@ export async function reportCommand(runDir: string, options: ReportCommandOption
     metrics = JSON.parse(content) as MetricsSummary;
     console.log(`📊 Loaded metrics for ${metrics.totalAgents} agent(s)`);
   } catch (error) {
-    console.error(`❌ Failed to load metrics.json: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(
+      `❌ Failed to load metrics.json: ${error instanceof Error ? error.message : String(error)}`
+    );
     process.exit(1);
   }
 
@@ -57,7 +62,9 @@ export async function reportCommand(runDir: string, options: ReportCommandOption
     scores = JSON.parse(content) as ScoreResult[];
     console.log(`📋 Loaded ${scores.length} score results`);
   } catch (error) {
-    console.error(`❌ Failed to load score.json: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(
+      `❌ Failed to load score.json: ${error instanceof Error ? error.message : String(error)}`
+    );
     process.exit(1);
   }
 
@@ -73,7 +80,8 @@ export async function reportCommand(runDir: string, options: ReportCommandOption
   }
 
   // 加载测试用例（用于显示额外信息）
-  const casesPath = options.casesPath || runConfig.casesPath || 'data/test-cases/test-case-config.json';
+  const casesPath =
+    options.casesPath || runConfig.casesPath || 'data/test-cases/test-case-config.json';
   let testCases: TestCase[] = [];
   try {
     testCases = await loadTestCases(resolve(casesPath));

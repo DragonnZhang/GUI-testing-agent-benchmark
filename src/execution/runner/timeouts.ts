@@ -62,9 +62,8 @@ export async function runWithConcurrencyIsolated<T, R>(
   concurrency: number,
   fn: (item: T, index: number) => Promise<R>
 ): Promise<Array<{ success: true; value: R } | { success: false; error: unknown }>> {
-  const results: Array<{ success: true; value: R } | { success: false; error: unknown }> = new Array(
-    items.length
-  );
+  const results: Array<{ success: true; value: R } | { success: false; error: unknown }> =
+    new Array(items.length);
   let currentIndex = 0;
 
   async function worker(): Promise<void> {
@@ -85,4 +84,3 @@ export async function runWithConcurrencyIsolated<T, R>(
 
   return results;
 }
-

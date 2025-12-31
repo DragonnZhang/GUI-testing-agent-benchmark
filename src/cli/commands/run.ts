@@ -1,7 +1,12 @@
 // src/cli/commands/run.ts - run 命令实现 (T022, T027, T028, T029, T030, T031, T033)
 
 import { resolve } from 'node:path';
-import { loadScenes, loadTestCases, parseRunConfig, validateCasesSceneRefs } from '../../config/load.js';
+import {
+  loadScenes,
+  loadTestCases,
+  parseRunConfig,
+  validateCasesSceneRefs,
+} from '../../config/load.js';
 import type { Scene, TestCase, RunConfig } from '../../config/schema.js';
 import { agentRegistry } from '../../execution/agent/registry.js';
 import { registerBuiltinAgents } from '../../execution/agent/builtins/index.js';
@@ -143,7 +148,9 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
     const filterIds = new Set(options.filterCases.split(',').map((id) => id.trim()));
     const originalCount = testCases.length;
     testCases = testCases.filter((tc) => filterIds.has(tc.case_id));
-    console.log(`🔍 Filtered to ${testCases.length} case(s) from ${originalCount} (--filter-cases)`);
+    console.log(
+      `🔍 Filtered to ${testCases.length} case(s) from ${originalCount} (--filter-cases)`
+    );
 
     if (testCases.length === 0) {
       console.error('❌ No test cases matched the filter');
@@ -192,7 +199,14 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
 
   try {
     // 启动需要的 Dev Server (T027)
-    await startLocalProjectServers(scenes, testCases, portManager, devServerManager, sceneAccessUrls, logger);
+    await startLocalProjectServers(
+      scenes,
+      testCases,
+      portManager,
+      devServerManager,
+      sceneAccessUrls,
+      logger
+    );
 
     // 设置已有的 baseUrl 场景
     for (const scene of scenes) {
@@ -202,7 +216,14 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
     }
 
     // 构建任务列表 (T028)
-    const tasks = buildRunTasks(testCases, scenes, agentNames, sceneAccessUrls, runId, config.timeout);
+    const tasks = buildRunTasks(
+      testCases,
+      scenes,
+      agentNames,
+      sceneAccessUrls,
+      runId,
+      config.timeout
+    );
 
     console.log(`\n📋 Executing ${tasks.length} task(s)...`);
 
@@ -366,7 +387,9 @@ function buildRunTasks(
       baseUrl = scene.source.baseUrl;
     }
     if (!baseUrl) {
-      console.warn(`⚠️ No access URL for scene ${scene.scene_id}, skipping case ${testCase.case_id}`);
+      console.warn(
+        `⚠️ No access URL for scene ${scene.scene_id}, skipping case ${testCase.case_id}`
+      );
       continue;
     }
 
