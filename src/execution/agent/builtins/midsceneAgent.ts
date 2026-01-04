@@ -27,6 +27,42 @@ export class MidsceneAgent extends AgentAdapter {
   };
 
   /**
+   * 将对象安全地转换为可序列化的格式（处理 Error 对象）
+   */
+  private toSerializable(obj: unknown): unknown {
+    if (obj instanceof Error) {
+      return {
+        name: obj.name,
+        message: obj.message,
+        stack: obj.stack,
+        ...Object.getOwnPropertyNames(obj).reduce(
+          (acc, key) => {
+            try {
+              acc[key] = this.toSerializable((obj as unknown as Record<string, unknown>)[key]);
+            } catch {
+              // 忽略无法访问的属性
+            }
+            return acc;
+          },
+          {} as Record<string, unknown>
+        ),
+      };
+    }
+
+    if (obj && typeof obj === 'object' && !(obj instanceof Date) && !(obj instanceof RegExp)) {
+      const result: Record<string, unknown> = {};
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          result[key] = this.toSerializable((obj as unknown as Record<string, unknown>)[key]);
+        }
+      }
+      return result;
+    }
+
+    return obj;
+  }
+
+  /**
    * 初始化浏览器和 Midscene Agent
    */
   async initialize(): Promise<void> {
@@ -129,11 +165,20 @@ export class MidsceneAgent extends AgentAdapter {
         };
       };
 
-      console.log('🚀 ~ MidsceneAgent ~ runCase ~ err:', err.errorTask);
+      console.log(
+        '🚀 ~ MidsceneAgent ~ runCase ~ err:',
+        JSON.stringify(this.toSerializable(err), null, 2)
+      );
+      console.log('🚀 ~ MidsceneAgent ~ runCase ~ err.message:', err.message);
+      console.log(
+        '🚀 ~ MidsceneAgent ~ runCase ~ errorTask:',
+        JSON.stringify(this.toSerializable(err.errorTask), null, 2)
+      );
 
       errors.push({
-        message: err?.errorTask?.errorMessage || 'Unknown error during Midscene execution',
-        stack: err?.errorTask?.errorStack,
+        message:
+          err?.errorTask?.errorMessage || err.message || 'Unknown error during Midscene execution',
+        stack: err?.errorTask?.errorStack || err.stack,
       });
 
       hasDefect = true;
