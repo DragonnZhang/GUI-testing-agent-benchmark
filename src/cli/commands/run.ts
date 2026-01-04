@@ -12,6 +12,7 @@ import { agentRegistry } from '../../execution/agent/registry.js';
 import { registerBuiltinAgents } from '../../execution/agent/builtins/index.js';
 import { runEngine, type RunTask } from '../../execution/runner/runEngine.js';
 import { RunLogger } from '../../execution/logging/runLogger.js';
+import { ConsoleLogger } from '../../execution/logging/consoleLogger.js';
 import { ArtifactsManager } from '../../execution/logging/artifacts.js';
 import { scoreCases } from '../../evaluation/scoring/binaryScorer.js';
 import { generateMetricsSummary } from '../../evaluation/scoring/metrics.js';
@@ -184,6 +185,11 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
   const logger = new RunLogger(artifacts.runDir);
   await logger.init();
 
+  // 初始化控制台日志器 - 将终端输出同步到文件
+  const consoleLogger = new ConsoleLogger(artifacts.runDir);
+  await consoleLogger.init();
+  consoleLogger.intercept();
+
   // 写入环境信息和配置
   await artifacts.writeEnv();
   const agentsMeta = agentNames.map((name) => agentRegistry.getRequired(name).meta);
@@ -282,6 +288,7 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
 
     // 关闭日志
     await logger.close();
+    await consoleLogger.close();
 
     // 输出汇总
     console.log('\n📊 Results Summary:');
@@ -297,6 +304,7 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
 
     console.log(`\n✅ Run completed! Output: ${artifacts.runDir}`);
     console.log(`   📄 Report: ${artifacts.runDir}/report.html`);
+    console.log(`   📋 Console log: ${artifacts.runDir}/console.log`);
   } finally {
     // 清理 Dev Server 和端口
     await devServerManager.stopAll();

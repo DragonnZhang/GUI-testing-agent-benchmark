@@ -26,7 +26,24 @@ npx uibench run -a dummy,noop
 
 # 查看运行结果
 open runs/<runId>/report.html
+
+# 查看控制台日志（避免终端截断）
+cat runs/<runId>/console.log
 ```
+
+## 输出文件说明
+
+每次运行会在 `runs/<runId>/` 目录下生成以下文件：
+
+- **console.log** - 终端输出完整日志（新增）
+- **events.ndjson** - 结构化事件日志（NDJSON 格式）
+- **report.html** - HTML 可视化报告
+- **metrics.json** - 性能指标汇总
+- **score.json** - 详细判分结果
+- **raw-results.json** - Agent 原始输出
+- **normalized-results.json** - 标准化结果
+- **run-config.json** - 运行配置
+- **env.json** - 环境信息
 
 ## CLI 命令
 
