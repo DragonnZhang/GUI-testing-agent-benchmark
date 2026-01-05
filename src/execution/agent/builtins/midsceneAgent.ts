@@ -79,7 +79,8 @@ export class MidsceneAgent extends AgentAdapter {
     this.page = await this.browser.newPage();
     this.agent = new PuppeteerAgent(this.page, {
       generateReport: true,
-      aiActContext: '执行测试用例，关注页面显示和交互功能的正确性',
+      aiActContext:
+        '执行测试用例，关注页面显示和交互功能的正确性。如果不符合测试用例，请直接抛出错误。',
     });
   }
 
