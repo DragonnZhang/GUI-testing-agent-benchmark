@@ -3,6 +3,7 @@
 import { agentRegistry } from '../registry.js';
 import { dummyAgent, noopAgent, alwaysDefectAgent } from './dummyAgent.js';
 import { midsceneAgent } from './midsceneAgent.js';
+import { stagehandAgent } from './stagehandAgent.js';
 
 /**
  * 注册所有内置 Agent
@@ -24,7 +25,11 @@ export function registerBuiltinAgents(): void {
   if (!agentRegistry.has('midscene')) {
     agentRegistry.register(midsceneAgent);
   }
+
+  if (!agentRegistry.has('stagehand')) {
+    agentRegistry.register(stagehandAgent);
+  }
 }
 
 // 导出内置 Agent 以便外部直接使用
-export { dummyAgent, noopAgent, alwaysDefectAgent, midsceneAgent };
+export { dummyAgent, noopAgent, alwaysDefectAgent, midsceneAgent, stagehandAgent };
