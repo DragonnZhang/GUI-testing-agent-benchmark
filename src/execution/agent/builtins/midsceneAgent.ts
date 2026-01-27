@@ -153,7 +153,8 @@ export class MidsceneAgent extends AgentAdapter {
       rawOutput = {
         agent: 'midscene',
         accessUrl: ctx.accessUrl,
-        prompt: ctx.prompt,
+        // @ts-expect-error 输出结果
+        output: result!.yamlFlow,
         status: 'success',
       };
     } catch (error) {
