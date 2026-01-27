@@ -1,3 +1,6 @@
+packages:
+  - 'data/ui-scenes/*'
+
 ignoredBuiltDependencies:
   - puppeteer
   - sharp
