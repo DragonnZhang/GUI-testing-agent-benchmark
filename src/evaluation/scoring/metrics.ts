@@ -1,7 +1,6 @@
 // src/evaluation/scoring/metrics.ts - 指标计算（precision/recall/f1/miss rate）(T047 增强)
 
 import type { ScoreResult, ScoreLabel } from './binaryScorer.js';
-import type { CaseDetailJudgeSummary } from './detailJudge.js';
 
 /**
  * 详情一致性指标 (T047)
@@ -86,11 +85,7 @@ export interface MetricsSummary {
 /**
  * 计算单 Agent 指标
  */
-export function calculateAgentMetrics(
-  scores: ScoreResult[],
-  agentName: string,
-  detailSummaries?: CaseDetailJudgeSummary[]
-): AgentMetrics {
+export function calculateAgentMetrics(scores: ScoreResult[], agentName: string): AgentMetrics {
   const agentScores = scores.filter((s) => s.agentName === agentName);
   const total = agentScores.length;
 
@@ -130,64 +125,20 @@ export function calculateAgentMetrics(
     errorRate: round4(errorRate),
   };
 
-  // 计算详情一致性指标 (T047)
-  if (detailSummaries && detailSummaries.length > 0) {
-    const agentDetails = detailSummaries.filter((d) => d.agentName === agentName);
-    if (agentDetails.length > 0) {
-      metrics.detailConsistency = calculateDetailConsistencyMetrics(agentDetails);
-    }
-  }
-
   return metrics;
-}
-
-/**
- * 计算详情一致性指标 (T047)
- */
-export function calculateDetailConsistencyMetrics(
-  summaries: CaseDetailJudgeSummary[]
-): DetailConsistencyMetrics {
-  let totalMatch = 0;
-  let totalPartial = 0;
-  let totalMismatch = 0;
-  let totalUnknown = 0;
-  let totalError = 0;
-  let totalDetails = 0;
-
-  for (const s of summaries) {
-    totalMatch += s.matchCount;
-    totalPartial += s.partialCount;
-    totalMismatch += s.mismatchCount;
-    totalUnknown += s.unknownCount;
-    totalError += s.errorCount;
-    totalDetails += s.detailResults.length;
-  }
-
-  return {
-    detailAccuracy: totalDetails > 0 ? round4(totalMatch / totalDetails) : 0,
-    partialMatchRate: totalDetails > 0 ? round4(totalPartial / totalDetails) : 0,
-    mismatchRate: totalDetails > 0 ? round4(totalMismatch / totalDetails) : 0,
-    unknownRate: totalDetails > 0 ? round4(totalUnknown / totalDetails) : 0,
-    detailErrorRate: totalDetails > 0 ? round4(totalError / totalDetails) : 0,
-    totalDetails,
-  };
 }
 
 /**
  * 生成指标汇总
  */
-export function generateMetricsSummary(
-  scores: ScoreResult[],
-  runId: string,
-  detailSummaries?: CaseDetailJudgeSummary[]
-): MetricsSummary {
+export function generateMetricsSummary(scores: ScoreResult[], runId: string): MetricsSummary {
   // 获取所有 Agent 名称
   const agentNames = [...new Set(scores.map((s) => s.agentName))];
 
   // 获取所有用例 ID（去重）
   const caseIds = new Set(scores.map((s) => s.caseId));
 
-  const byAgent = agentNames.map((name) => calculateAgentMetrics(scores, name, detailSummaries));
+  const byAgent = agentNames.map((name) => calculateAgentMetrics(scores, name));
 
   return {
     runId,
@@ -195,7 +146,6 @@ export function generateMetricsSummary(
     totalAgents: agentNames.length,
     byAgent,
     generatedAt: new Date().toISOString(),
-    detailJudgeEnabled: detailSummaries && detailSummaries.length > 0,
   };
 }
 
