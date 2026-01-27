@@ -35,6 +35,7 @@ async function executeTask(task: RunTask, logger: RunLogger): Promise<CaseExecut
   const ctx: AgentContext = {
     accessUrl,
     prompt: testCase.prompt,
+    groundTruth: testCase.ground_truth,
     meta: {
       caseId: testCase.case_id,
       sceneId: testCase.ui_scene_id,

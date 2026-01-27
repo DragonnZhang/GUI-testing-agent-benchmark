@@ -34,8 +34,20 @@ export interface ScoreResult {
  */
 export function scoreCase(execResult: CaseExecutionResult, testCase: TestCase): ScoreResult {
   const groundTruthHasDefect = testCase.ground_truth.has_defect;
-  const predictedHasDefect = execResult.result.hasDefect;
+  let predictedHasDefect = execResult.result.hasDefect;
   const executionSuccess = execResult.success;
+
+  // 对于 MidsceneAgent，如果有 LLM 评估结果，使用 LLM 的判断来确定 Agent 的预测准确性
+  if (execResult.agentName === 'midscene' && execResult.result.rawOutput) {
+    const rawOutput = execResult.result.rawOutput as any;
+    if (rawOutput?.llmEvaluation?.isAgentCorrect !== undefined) {
+      // 如果 LLM 评估认为 Agent 判断正确，则使用 ground truth 作为预测结果
+      // 如果 LLM 评估认为 Agent 判断错误，则使用与 ground truth 相反的结果作为预测
+      predictedHasDefect = rawOutput.llmEvaluation.isAgentCorrect
+        ? groundTruthHasDefect
+        : !groundTruthHasDefect;
+    }
+  }
 
   let label: ScoreLabel;
 

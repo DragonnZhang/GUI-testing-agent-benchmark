@@ -1,5 +1,7 @@
 // src/execution/agent/types.ts - Agent 标准输入/输出类型
 
+import type { GroundTruth } from '../../config/schema.js';
+
 /**
  * Agent 执行上下文（统一输入）
  */
@@ -9,6 +11,9 @@ export interface AgentContext {
 
   /** 测试指令/提示词 */
   prompt: string;
+
+  /** 期望的测试结果（用于智能评估 Agent 判断的准确性） */
+  groundTruth: GroundTruth;
 
   /** 元数据 */
   meta: {

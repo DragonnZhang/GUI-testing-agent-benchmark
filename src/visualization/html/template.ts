@@ -308,6 +308,58 @@ export const htmlTemplate = `
       opacity: 0.6;
     }
 
+    /* Raw Output Specific Styles */
+    .raw-output {
+      max-height: 400px;
+    }
+
+    .raw-output .json-key {
+      color: #0066cc;
+      font-weight: 600;
+    }
+
+    .raw-output .json-string {
+      color: #008000;
+    }
+
+    .raw-output .json-number {
+      color: #ff6600;
+    }
+
+    .raw-output .json-boolean {
+      color: #9933cc;
+      font-weight: 600;
+    }
+
+    .raw-output .json-null {
+      color: #999999;
+      font-style: italic;
+    }
+
+    .raw-output .collapse-btn {
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      font-family: monospace;
+      font-size: 0.8rem;
+      margin-right: 4px;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .raw-output .collapse-btn:hover {
+      color: #333;
+    }
+
+    .raw-output .collapsible {
+      margin-left: 16px;
+    }
+
+    .raw-output .collapsed {
+      display: none;
+    }
+
     @media (max-width: 768px) {
       .metric-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -457,7 +509,7 @@ export const htmlTemplate = `
       // Raw Output Section
       html += '<div class="detail-section">';
       html += '<h4>Raw Output</h4>';
-      html += '<div class="detail-content">' + escapeHtml(data.rawOutput || '(no output)') + '</div>';
+      html += '<div class="detail-content raw-output">' + formatRawOutput(data.rawOutput) + '</div>';
       html += '</div>';
 
       // Prompt Section
@@ -498,6 +550,105 @@ export const htmlTemplate = `
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
+    }
+
+    function formatRawOutput(rawOutput) {
+      if (!rawOutput) return '(no output)';
+
+      // 尝试解析为 JSON
+      let parsed;
+      try {
+        parsed = typeof rawOutput === 'string' ? JSON.parse(rawOutput) : rawOutput;
+      } catch (e) {
+        // 如果不是 JSON，返回原始文本
+        return escapeHtml(String(rawOutput));
+      }
+
+      // 递归格式化 JSON 对象
+      return formatJsonValue(parsed, 0);
+    }
+
+    function formatJsonValue(value, depth) {
+      const indent = '  '.repeat(depth);
+
+      if (value === null) {
+        return '<span class="json-null">null</span>';
+      }
+
+      if (typeof value === 'boolean') {
+        return '<span class="json-boolean">' + value + '</span>';
+      }
+
+      if (typeof value === 'number') {
+        return '<span class="json-number">' + value + '</span>';
+      }
+
+      if (typeof value === 'string') {
+        return '<span class="json-string">"' + escapeHtml(value) + '"</span>';
+      }
+
+      if (Array.isArray(value)) {
+        if (value.length === 0) return '[]';
+
+        const id = 'collapse_' + Math.random().toString(36).substr(2, 9);
+        let result = '[\\n';
+        result += '<div class="collapsible" id="' + id + '">';
+
+        value.forEach((item, i) => {
+          result += indent + '  ' + formatJsonValue(item, depth + 1);
+          if (i < value.length - 1) result += ',';
+          result += '\\n';
+        });
+
+        result += '</div>';
+        result += indent + ']';
+
+        if (value.length > 5) {
+          result = '<button class="collapse-btn" onclick="toggleCollapse(\\''+id+'\\', this)">[-]</button>' + result;
+        }
+
+        return result;
+      }
+
+      if (typeof value === 'object') {
+        const keys = Object.keys(value);
+        if (keys.length === 0) return '{}';
+
+        const id = 'collapse_' + Math.random().toString(36).substr(2, 9);
+        let result = '{\\n';
+        result += '<div class="collapsible" id="' + id + '">';
+
+        keys.forEach((key, i) => {
+          result += indent + '  <span class="json-key">"' + escapeHtml(key) + '"</span>: ';
+          result += formatJsonValue(value[key], depth + 1);
+          if (i < keys.length - 1) result += ',';
+          result += '\\n';
+        });
+
+        result += '</div>';
+        result += indent + '}';
+
+        if (keys.length > 5) {
+          result = '<button class="collapse-btn" onclick="toggleCollapse(\\''+id+'\\', this)">[-]</button>' + result;
+        }
+
+        return result;
+      }
+
+      return escapeHtml(String(value));
+    }
+
+    function toggleCollapse(id, button) {
+      const element = document.getElementById(id);
+      const isCollapsed = element.classList.contains('collapsed');
+
+      if (isCollapsed) {
+        element.classList.remove('collapsed');
+        button.textContent = '[-]';
+      } else {
+        element.classList.add('collapsed');
+        button.textContent = '[+]';
+      }
     }
 
     // Close modal on outside click
