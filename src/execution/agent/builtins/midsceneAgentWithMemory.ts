@@ -6,6 +6,11 @@ import type { Page, Browser } from 'puppeteer';
 import { existsSync } from 'fs';
 import { AgentAdapter, type AgentMeta } from '../adapter.js';
 import type { AgentContext, AgentResult } from '../types.js';
+import {
+  evaluateAgentResultWithRetry,
+  createFallbackEvaluation,
+  type AgentResultEvaluation,
+} from '../services/agentResultEvaluator.js';
 import 'dotenv/config';
 
 /**
@@ -138,6 +143,9 @@ export class MidsceneAgent extends AgentAdapter {
     const errors: Array<{ message: string; stack?: string }> = [];
     let hasDefect = false;
     let rawOutput: unknown = null;
+    let agentJudgment = '';
+    let executionStatus: 'success' | 'error' = 'success';
+    let llmEvaluation: AgentResultEvaluation | null = null;
 
     try {
       // 导航到目标页面
@@ -150,11 +158,17 @@ export class MidsceneAgent extends AgentAdapter {
       const result = await this.agent.aiAct(ctx.prompt);
       console.log('🚀 ~ MidsceneAgent ~ runCase ~ result:', result);
 
+      // 提取 Agent 的判断结果
+      // @ts-expect-error 输出结果
+      agentJudgment = JSON.stringify(result!.yamlFlow);
+      executionStatus = 'success';
+
       rawOutput = {
         agent: 'midscene',
         accessUrl: ctx.accessUrl,
-        prompt: ctx.prompt,
+        output: agentJudgment,
         status: 'success',
+        originalResult: this.toSerializable(result),
       };
     } catch (error) {
       const err = error as Error & {
@@ -170,40 +184,87 @@ export class MidsceneAgent extends AgentAdapter {
         '🚀 ~ MidsceneAgent ~ runCase ~ err:',
         JSON.stringify(this.toSerializable(err), null, 2)
       );
-      console.log('🚀 ~ MidsceneAgent ~ runCase ~ err.message:', err.message);
-      console.log(
-        '🚀 ~ MidsceneAgent ~ runCase ~ errorTask:',
-        JSON.stringify(this.toSerializable(err.errorTask), null, 2)
+
+      // 提取 Agent 的判断结果（错误情况）
+      agentJudgment = JSON.stringify(
+        err?.errorTask?.errorMessage || err.message || 'Unknown error during Midscene execution'
       );
+      executionStatus = 'error';
 
       errors.push({
-        message:
-          err?.errorTask?.errorMessage || err.message || 'Unknown error during Midscene execution',
+        message: agentJudgment,
         stack: err?.errorTask?.errorStack || err.stack,
       });
 
-      hasDefect = true;
       rawOutput = {
         agent: 'midscene',
         accessUrl: ctx.accessUrl,
-        prompt: ctx.prompt,
-        status: err?.errorTask?.status,
-        error: err?.errorTask?.errorMessage,
+        status: err?.errorTask?.status || 'error',
+        error: agentJudgment,
+        originalError: this.toSerializable(err),
       };
     }
 
+    // 使用 LLM 评估 Agent 的判断结果
+    try {
+      console.log('🔍 开始使用 LLM 评估 Agent 判断结果...');
+
+      llmEvaluation = await evaluateAgentResultWithRetry({
+        testPrompt: ctx.prompt,
+        agentJudgment,
+        executionStatus,
+        groundTruth: ctx.groundTruth,
+      });
+
+      // 根据 LLM 评估结果设置 hasDefect
+      // hasDefect 应该反映实际是否存在缺陷，而不是 Agent 判断的正确性
+      // 我们使用 ground truth 作为基准，因为 LLM 已经验证了 Agent 的判断是否准确
+      hasDefect = ctx.groundTruth.has_defect;
+
+      console.log('✅ LLM 评估完成:', {
+        isAgentCorrect: llmEvaluation.isAgentCorrect,
+        hasDefect,
+        detectedCount: llmEvaluation.detectedDefectCount,
+        expectedCount: llmEvaluation.expectedDefectCount,
+      });
+    } catch (evalError) {
+      console.warn('⚠️ LLM 评估失败，使用降级逻辑:', evalError);
+
+      // 使用降级逻辑
+      llmEvaluation = createFallbackEvaluation(
+        executionStatus,
+        ctx.groundTruth.defect_details.length
+      );
+      hasDefect = ctx.groundTruth.has_defect;
+
+      // 记录降级原因
+      errors.push({
+        message: `LLM 评估失败: ${evalError instanceof Error ? evalError.message : '未知错误'}`,
+      });
+    }
+
+    // 增强 rawOutput，包含评估信息
+    rawOutput = {
+      ...(rawOutput as object),
+      llmEvaluation,
+      evaluationUsed: llmEvaluation ? 'llm' : 'fallback',
+    };
+
+    // 构建缺陷信息
+    const defects = hasDefect
+      ? [
+          {
+            type: 'interaction' as const,
+            description: llmEvaluation.matchingAnalysis || errors.map((e) => e.message).join('; '),
+            severity: ctx.groundTruth.defect_level || 'medium',
+          },
+        ]
+      : [];
+
     return {
       hasDefect,
-      defects: hasDefect
-        ? [
-            {
-              type: 'interaction',
-              description: errors.map((e) => e.message).join('; '),
-              severity: 'high',
-            },
-          ]
-        : [],
-      confidence: hasDefect ? 0 : 0.9,
+      defects,
+      confidence: llmEvaluation?.confidence || (hasDefect ? 0.3 : 0.7),
       rawOutput,
       errors,
     };
