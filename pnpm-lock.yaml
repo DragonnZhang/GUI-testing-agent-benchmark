@@ -12,8 +12,8 @@ importers:
         specifier: ^3.0.8
         version: 3.0.8(@cfworker/json-schema@4.1.1)(@opentelemetry/api@1.9.0)(deepmerge@4.3.1)(dotenv@17.2.3)(hono@4.11.5)(zod@3.25.76)
       '@midscene/web':
-        specifier: ^1.0.4
-        version: 1.0.4(bufferutil@4.1.0)(playwright@1.57.0)(puppeteer@24.34.0(bufferutil@4.1.0)(typescript@5.9.3))(ws@8.18.3(bufferutil@4.1.0))
+        specifier: ^1.3.3
+        version: 1.3.3(bufferutil@4.1.0)(playwright@1.57.0)(puppeteer@24.34.0(bufferutil@4.1.0)(typescript@5.9.3))(ws@8.18.3(bufferutil@4.1.0))
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -607,19 +607,19 @@ packages:
     peerDependencies:
       '@langchain/core': '>=0.3.39 <0.4.0'
 
-  '@midscene/core@1.0.4':
-    resolution: {integrity: sha512-4OKTmDidSc3hn+/sGx9egUT9vpcPFKM3hQzoOO5FxKgnAmjS4SD/40voKTfqTkUjD5LcbL2yymKeBYofT5gsIg==}
-    engines: {node: '>=18.0.0'}
+  '@midscene/core@1.3.3':
+    resolution: {integrity: sha512-lhVF32f1TLw8M8Pa3LtqBd2OcN9j0ITfB6QJ+oXhMq+zs3JaXdJQJY/3YzJ7xGA2mQwITeWn0o58I4fHM6c/bg==}
+    engines: {node: '>=18.19.0'}
 
-  '@midscene/playground@1.0.4':
-    resolution: {integrity: sha512-lyB7tMci6T7R1aA3rSaIcfl3ElA5v3zYIYV2kYrTp2iGRTiE6F3jzajcbDVE+SponO2mJJKZUiu5S/lKXpSTUQ==}
+  '@midscene/playground@1.3.3':
+    resolution: {integrity: sha512-Vylqc7jU+FlUx5Ix9MJJaCcEr+U8BTPGcsWhVJcYpwT1+HRjAizIsUwhGjoKPrQgWfT6tSVLPpeyu6ToUlcuug==}
 
-  '@midscene/shared@1.0.4':
-    resolution: {integrity: sha512-j5ITlUSRIz6Moy2hNphqy6IjED/b5GXs+yZry6t1nWgu3LJpCVgNoBlYVzoM6/cejTfYBYMYFTU/U0Rl0H49nA==}
+  '@midscene/shared@1.3.3':
+    resolution: {integrity: sha512-Duo4ZHsFbjvTN4PSuUdaMakXldTgAl3GYRcUfigB7KLSuEp8fLUi9AkLmf74Sb3dbizPSg2oVkptb/z11zcSpw==}
 
-  '@midscene/web@1.0.4':
-    resolution: {integrity: sha512-380MMcEUhZUw4nYpAiN0fcOBmrjwTY+XRrT4pX8RlacWPNzWNwZWh/MoB8U7/1Vd8x61n3YwHJL0Zs3cRjUbMw==}
-    engines: {node: '>=18.0.0'}
+  '@midscene/web@1.3.3':
+    resolution: {integrity: sha512-C7OlGOH+evGU/QIXmo+UKj+M/4SMNAMNhHJlN5VdRP3l1IiEy4JSyjWV5ahGtyyUX/v8yWSAIo0RQ2OMYbg0eg==}
+    engines: {node: '>=18.19.0'}
     hasBin: true
     peerDependencies:
       '@playwright/test': ^1.44.1
@@ -630,6 +630,10 @@ packages:
         optional: true
       puppeteer:
         optional: true
+
+  '@modelcontextprotocol/sdk@1.10.2':
+    resolution: {integrity: sha512-rb6AMp2DR4SN+kc6L1ta2NCpApyA9WYNx3CrTSZvGxq9wH71bRur+zRqPfg0vQ9mjywR7qZdX2RGHOPq3ss+tA==}
+    engines: {node: '>=18'}
 
   '@modelcontextprotocol/sdk@1.25.3':
     resolution: {integrity: sha512-vsAMBMERybvYgKbg/l4L1rhS7VXV1c0CtyJg72vwxONVX0l4ZfKVAnZEWTQixJGTzKnELjQ59e4NbdFDALRiAQ==}
@@ -3598,9 +3602,9 @@ snapshots:
       - encoding
       - ws
 
-  '@midscene/core@1.0.4(ws@8.18.3(bufferutil@4.1.0))':
+  '@midscene/core@1.3.3(ws@8.18.3(bufferutil@4.1.0))':
     dependencies:
-      '@midscene/shared': 1.0.4
+      '@midscene/shared': 1.3.3
       '@ui-tars/action-parser': 1.2.3
       dayjs: 1.11.19
       dotenv: 16.6.1
@@ -3616,10 +3620,10 @@ snapshots:
       - supports-color
       - ws
 
-  '@midscene/playground@1.0.4(ws@8.18.3(bufferutil@4.1.0))':
+  '@midscene/playground@1.3.3(ws@8.18.3(bufferutil@4.1.0))':
     dependencies:
-      '@midscene/core': 1.0.4(ws@8.18.3(bufferutil@4.1.0))
-      '@midscene/shared': 1.0.4
+      '@midscene/core': 1.3.3(ws@8.18.3(bufferutil@4.1.0))
+      '@midscene/shared': 1.3.3
       cors: 2.8.5
       dotenv: 16.6.1
       express: 4.22.1
@@ -3630,8 +3634,9 @@ snapshots:
       - supports-color
       - ws
 
-  '@midscene/shared@1.0.4':
+  '@midscene/shared@1.3.3':
     dependencies:
+      '@modelcontextprotocol/sdk': 1.10.2
       '@silvia-odwyer/photon': 0.3.3
       '@silvia-odwyer/photon-node': 0.3.3
       debug: 4.4.0
@@ -3644,11 +3649,11 @@ snapshots:
       - encoding
       - supports-color
 
-  '@midscene/web@1.0.4(bufferutil@4.1.0)(playwright@1.57.0)(puppeteer@24.34.0(bufferutil@4.1.0)(typescript@5.9.3))(ws@8.18.3(bufferutil@4.1.0))':
+  '@midscene/web@1.3.3(bufferutil@4.1.0)(playwright@1.57.0)(puppeteer@24.34.0(bufferutil@4.1.0)(typescript@5.9.3))(ws@8.18.3(bufferutil@4.1.0))':
     dependencies:
-      '@midscene/core': 1.0.4(ws@8.18.3(bufferutil@4.1.0))
-      '@midscene/playground': 1.0.4(ws@8.18.3(bufferutil@4.1.0))
-      '@midscene/shared': 1.0.4
+      '@midscene/core': 1.3.3(ws@8.18.3(bufferutil@4.1.0))
+      '@midscene/playground': 1.3.3(ws@8.18.3(bufferutil@4.1.0))
+      '@midscene/shared': 1.3.3
       cors: 2.8.5
       dayjs: 1.11.19
       dotenv: 16.6.1
@@ -3665,6 +3670,21 @@ snapshots:
       - supports-color
       - utf-8-validate
       - ws
+
+  '@modelcontextprotocol/sdk@1.10.2':
+    dependencies:
+      content-type: 1.0.5
+      cors: 2.8.5
+      cross-spawn: 7.0.6
+      eventsource: 3.0.7
+      express: 5.2.1
+      express-rate-limit: 7.5.1(express@5.2.1)
+      pkce-challenge: 5.0.1
+      raw-body: 3.0.2
+      zod: 3.25.76
+      zod-to-json-schema: 3.25.1(zod@3.25.76)
+    transitivePeerDependencies:
+      - supports-color
 
   '@modelcontextprotocol/sdk@1.25.3(@cfworker/json-schema@4.1.1)(hono@4.11.5)(zod@3.25.76)':
     dependencies:
@@ -3800,7 +3820,7 @@ snapshots:
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 22.19.3
+      '@types/node': 24.10.9
 
   '@types/estree@1.0.8': {}
 
@@ -4368,7 +4388,7 @@ snapshots:
   engine.io@6.6.5(bufferutil@4.1.0):
     dependencies:
       '@types/cors': 2.8.19
-      '@types/node': 22.19.3
+      '@types/node': 24.10.9
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.7.2

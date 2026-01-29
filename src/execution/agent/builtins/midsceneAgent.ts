@@ -212,7 +212,9 @@ export class MidsceneAgent extends AgentAdapter {
       });
 
       // 执行 AI 测试指令
-      const result = await this.agent.aiAct(ctx.prompt);
+      const result = await this.agent.aiAct(ctx.prompt, {
+        deepThink: true,
+      });
       console.log('🚀 ~ MidsceneAgent ~ runCase ~ result:', result);
 
       // 提取 Agent 的判断结果
