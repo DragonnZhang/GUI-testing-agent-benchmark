@@ -1,290 +1,223 @@
-// src/execution/agent/builtins/midsceneAgent.ts - Midscene Agent Adapter
+// src/execution/agent/builtins/midsceneAgentWithMemory.ts - 带记忆功能的 Midscene Agent
 
-import puppeteer from 'puppeteer';
-import { PuppeteerAgent } from '@midscene/web/puppeteer';
-import type { Page, Browser } from 'puppeteer';
-import { existsSync } from 'fs';
-import { AgentAdapter, type AgentMeta } from '../adapter.js';
 import type { AgentContext, AgentResult } from '../types.js';
+import type { AgentMeta } from '../adapter.js';
+import { MidsceneAgent } from './midsceneAgent.js';
 import {
-  evaluateAgentResultWithRetry,
-  createFallbackEvaluation,
-  type AgentResultEvaluation,
-} from '../services/agentResultEvaluator.js';
-import 'dotenv/config';
+  MemoryService,
+  type MemoryServiceConfig,
+  type MemoryFormationInput,
+  type MemoryRetrievalInput
+} from '../services/memoryService/index.js';
 
 /**
- * Midscene Agent Adapter
+ * 带记忆功能的 Midscene Agent
  *
- * 基于 midscene 提供的 PuppeteerAgent 实现 UI 测试
- * 使用 Puppeteer 控制浏览器，通过 AI 执行测试指令
+ * 继承原有的 MidsceneAgent，集成记忆系统功能：
+ * 1. 测试前：检索相关记忆，增强测试指令
+ * 2. 测试后：异步形成新记忆（如果有错误）
  */
-export class MidsceneAgent extends AgentAdapter {
-  private browser?: Browser;
-  private page?: Page;
-  private agent?: PuppeteerAgent;
+export class MidsceneAgentWithMemory extends MidsceneAgent {
+  private memoryService: MemoryService;
+  private memoryConfig: MemoryServiceConfig;
 
   readonly meta: AgentMeta = {
-    name: 'midscene',
+    name: 'midscene-memory',
     version: '1.0.0',
-    description: 'AI-powered UI testing agent based on Midscene and Puppeteer',
+    description: 'AI-powered UI testing agent with memory system - learns from past errors',
     supportedDefectTypes: ['display', 'interaction', 'other'],
   };
 
-  /**
-   * 将对象安全地转换为可序列化的格式（处理 Error 对象）
-   */
-  private toSerializable(obj: unknown): unknown {
-    if (obj instanceof Error) {
-      return {
-        name: obj.name,
-        message: obj.message,
-        stack: obj.stack,
-        ...Object.getOwnPropertyNames(obj).reduce(
-          (acc, key) => {
-            try {
-              acc[key] = this.toSerializable((obj as unknown as Record<string, unknown>)[key]);
-            } catch {
-              // 忽略无法访问的属性
-            }
-            return acc;
-          },
-          {} as Record<string, unknown>
-        ),
-      };
-    }
+  constructor(memoryConfig: Partial<MemoryServiceConfig> = {}) {
+    super();
 
-    if (obj && typeof obj === 'object' && !(obj instanceof Date) && !(obj instanceof RegExp)) {
-      const result: Record<string, unknown> = {};
-      for (const key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          result[key] = this.toSerializable((obj as unknown as Record<string, unknown>)[key]);
-        }
-      }
-      return result;
-    }
+    // 设置记忆系统配置
+    this.memoryConfig = {
+      enabled: true,
+      dataPath: 'data/memory',
+      asyncMemoryFormation: true,
+      retrievalTimeoutMs: 5000,
+      ...memoryConfig,
+    };
 
-    return obj;
+    this.memoryService = new MemoryService(this.memoryConfig);
   }
 
   /**
-   * 初始化浏览器和 Midscene Agent
+   * 初始化Agent（包括记忆系统）
    */
   async initialize(): Promise<void> {
-    console.log('🚀 ~ MidsceneAgent ~ initialize ~ initialize:');
+    console.log('🚀 初始化带记忆功能的 MidsceneAgent...');
 
-    // 获取本地 Chrome 浏览器路径
-    const executablePath = this.getChromePath();
+    // 初始化基础 MidsceneAgent
+    await super.initialize();
 
-    this.browser = await puppeteer.launch({
-      executablePath,
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-    this.page = await this.browser.newPage();
-    this.agent = new PuppeteerAgent(this.page, {
-      generateReport: true,
-      aiActContext:
-        '执行测试用例，关注页面显示和交互功能的正确性。如果不符合测试用例，请直接抛出错误。',
-    });
-  }
-
-  /**
-   * 获取本地 Chrome 浏览器路径
-   */
-  private getChromePath(): string {
-    // macOS
-    const macPaths = [
-      '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-      '/Applications/Chromium.app/Contents/MacOS/Chromium',
-    ];
-
-    // Linux
-    const linuxPaths = [
-      '/usr/bin/google-chrome',
-      '/usr/bin/chromium-browser',
-      '/snap/bin/chromium',
-    ];
-
-    // Windows
-    const windowsPaths = [
-      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-    ];
-
-    const allPaths = [...macPaths, ...linuxPaths, ...windowsPaths];
-
-    // 检查文件是否存在
-    for (const path of allPaths) {
-      try {
-        if (existsSync(path)) {
-          console.log(`✅ Found Chrome at: ${path}`);
-          return path;
-        }
-      } catch {
-        // 继续检查下一个路径
-      }
+    // 初始化记忆系统
+    try {
+      await this.memoryService.initialize();
+      console.log('🧠 记忆系统初始化成功');
+    } catch (error) {
+      console.warn('⚠️ 记忆系统初始化失败，将以普通模式运行:', error);
+      // 记忆系统失败不影响基本功能
     }
-
-    // 如果都找不到，抛出错误
-    throw new Error(
-      'Could not find Chrome/Chromium. Please install Chrome or set CHROME_PATH environment variable.'
-    );
   }
 
   /**
-   * 执行单条测试用例
+   * 执行单条测试用例（带记忆增强）
    */
   async runCase(ctx: AgentContext): Promise<AgentResult> {
-    if (!this.agent || !this.page) {
-      throw new Error('Midscene Agent not initialized. Call initialize() first.');
-    }
-
-    const errors: Array<{ message: string; stack?: string }> = [];
-    let hasDefect = false;
-    let rawOutput: unknown = null;
-    let agentJudgment = '';
-    let executionStatus: 'success' | 'error' = 'success';
-    let llmEvaluation: AgentResultEvaluation | null = null;
+    console.log('🎯 开始记忆增强的测试执行...', {
+      caseId: ctx.meta.caseId,
+      sceneId: ctx.meta.sceneId,
+    });
 
     try {
-      // 导航到目标页面
-      await this.page.goto(ctx.accessUrl, {
-        waitUntil: 'networkidle2',
-        timeout: ctx.meta.timeoutMs,
-      });
+      // 1. 检索相关记忆并增强测试指令
+      const enhancedContext = await this.enhanceContextWithMemory(ctx);
 
-      // 执行 AI 测试指令
-      const result = await this.agent.aiAct(ctx.prompt);
-      console.log('🚀 ~ MidsceneAgent ~ runCase ~ result:', result);
+      // 2. 执行测试（使用父类的逻辑）
+      const result = await super.runCase(enhancedContext);
 
-      // 提取 Agent 的判断结果
-      // @ts-expect-error 输出结果
-      agentJudgment = JSON.stringify(result!.yamlFlow);
-      executionStatus = 'success';
+      // 3. 异步形成记忆（如果有学习价值）
+      await this.formMemoryAsync(ctx, result);
 
-      rawOutput = {
-        agent: 'midscene',
-        accessUrl: ctx.accessUrl,
-        output: agentJudgment,
-        status: 'success',
-        originalResult: this.toSerializable(result),
-      };
+      return result;
     } catch (error) {
-      const err = error as Error & {
-        errorTask: {
-          status: string;
-          error: Error;
-          errorMessage: string;
-          errorStack: string;
-        };
-      };
+      console.error('❌ 记忆增强测试执行失败:', error);
 
-      console.log(
-        '🚀 ~ MidsceneAgent ~ runCase ~ err:',
-        JSON.stringify(this.toSerializable(err), null, 2)
-      );
-
-      // 提取 Agent 的判断结果（错误情况）
-      agentJudgment = JSON.stringify(
-        err?.errorTask?.errorMessage || err.message || 'Unknown error during Midscene execution'
-      );
-      executionStatus = 'error';
-
-      errors.push({
-        message: agentJudgment,
-        stack: err?.errorTask?.errorStack || err.stack,
-      });
-
-      rawOutput = {
-        agent: 'midscene',
-        accessUrl: ctx.accessUrl,
-        status: err?.errorTask?.status || 'error',
-        error: agentJudgment,
-        originalError: this.toSerializable(err),
-      };
+      // 如果记忆系统出错，降级到普通执行
+      console.log('🔄 降级到普通测试执行...');
+      return await super.runCase(ctx);
     }
-
-    // 使用 LLM 评估 Agent 的判断结果
-    try {
-      console.log('🔍 开始使用 LLM 评估 Agent 判断结果...');
-
-      llmEvaluation = await evaluateAgentResultWithRetry({
-        testPrompt: ctx.prompt,
-        agentJudgment,
-        executionStatus,
-        groundTruth: ctx.groundTruth,
-      });
-
-      // 根据 LLM 评估结果设置 hasDefect
-      // hasDefect 应该反映实际是否存在缺陷，而不是 Agent 判断的正确性
-      // 我们使用 ground truth 作为基准，因为 LLM 已经验证了 Agent 的判断是否准确
-      hasDefect = ctx.groundTruth.has_defect;
-
-      console.log('✅ LLM 评估完成:', {
-        isAgentCorrect: llmEvaluation.isAgentCorrect,
-        hasDefect,
-        detectedCount: llmEvaluation.detectedDefectCount,
-        expectedCount: llmEvaluation.expectedDefectCount,
-      });
-    } catch (evalError) {
-      console.warn('⚠️ LLM 评估失败，使用降级逻辑:', evalError);
-
-      // 使用降级逻辑
-      llmEvaluation = createFallbackEvaluation(
-        executionStatus,
-        ctx.groundTruth.defect_details.length
-      );
-      hasDefect = ctx.groundTruth.has_defect;
-
-      // 记录降级原因
-      errors.push({
-        message: `LLM 评估失败: ${evalError instanceof Error ? evalError.message : '未知错误'}`,
-      });
-    }
-
-    // 增强 rawOutput，包含评估信息
-    rawOutput = {
-      ...(rawOutput as object),
-      llmEvaluation,
-      evaluationUsed: llmEvaluation ? 'llm' : 'fallback',
-    };
-
-    // 构建缺陷信息
-    const defects = hasDefect
-      ? [
-          {
-            type: 'interaction' as const,
-            description: llmEvaluation.matchingAnalysis || errors.map((e) => e.message).join('; '),
-            severity: ctx.groundTruth.defect_level || 'medium',
-          },
-        ]
-      : [];
-
-    return {
-      hasDefect,
-      defects,
-      confidence: llmEvaluation?.confidence || (hasDefect ? 0.3 : 0.7),
-      rawOutput,
-      errors,
-    };
   }
 
   /**
-   * 清理资源
+   * 使用记忆增强测试上下文
+   */
+  private async enhanceContextWithMemory(ctx: AgentContext): Promise<AgentContext> {
+    try {
+      if (!this.memoryConfig.enabled) {
+        return ctx;
+      }
+
+      console.log('🔍 检索相关记忆...');
+
+      // 构建记忆检索输入
+      const retrievalInput: MemoryRetrievalInput = {
+        context: ctx,
+        similarityThreshold: 0.3,
+        maxResults: 8,
+      };
+
+      // 检索记忆指导
+      const memoryGuidance = await this.memoryService.retrieveGuidance(retrievalInput);
+
+      if (memoryGuidance.length === 0) {
+        console.log('ℹ️ 未找到相关记忆，使用原始指令');
+        return ctx;
+      }
+
+      // 增强测试指令
+      const enhancedPrompt = this.buildEnhancedPrompt(ctx.prompt, memoryGuidance);
+
+      console.log('✅ 测试指令已通过记忆增强', {
+        originalLength: ctx.prompt.length,
+        enhancedLength: enhancedPrompt.length,
+        guidanceCount: memoryGuidance.length,
+      });
+
+      return {
+        ...ctx,
+        prompt: enhancedPrompt,
+      };
+    } catch (error) {
+      console.warn('⚠️ 记忆检索失败，使用原始指令:', error);
+      return ctx;
+    }
+  }
+
+  /**
+   * 构建增强的测试指令
+   */
+  private buildEnhancedPrompt(originalPrompt: string, memoryGuidance: string[]): string {
+    // 构建增强指令，保持原始指令的完整性
+    const enhancedPrompt = `${originalPrompt}
+
+---
+🧠 **基于历史经验的提醒**：
+
+${memoryGuidance.join('\n\n')}
+
+---
+⚠️ **重要提醒**：请在执行测试时特别注意上述经验指导，但仍需根据当前页面的实际情况进行判断。`;
+
+    return enhancedPrompt;
+  }
+
+  /**
+   * 异步形成记忆
+   */
+  private async formMemoryAsync(ctx: AgentContext, result: AgentResult): Promise<void> {
+    try {
+      if (!this.memoryConfig.enabled) {
+        return;
+      }
+
+      // 检查结果中是否包含 LLM 评估
+      const rawOutput = result.rawOutput as any;
+      const llmEvaluation = rawOutput?.llmEvaluation;
+
+      if (!llmEvaluation) {
+        console.log('ℹ️ 缺少 LLM 评估结果，跳过记忆形成');
+        return;
+      }
+
+      // 构建记忆形成输入
+      const formationInput: MemoryFormationInput = {
+        context: ctx,
+        result: result,
+        evaluation: llmEvaluation,
+      };
+
+      // 异步形成记忆
+      await this.memoryService.formMemory(formationInput);
+    } catch (error) {
+      console.warn('⚠️ 记忆形成过程中出现错误:', error);
+      // 记忆形成失败不影响测试结果
+    }
+  }
+
+  /**
+   * 获取记忆系统统计信息
+   */
+  async getMemoryStats(): Promise<any> {
+    try {
+      return await this.memoryService.getMemoryStats();
+    } catch (error) {
+      console.error('❌ 获取记忆统计失败:', error);
+      return null;
+    }
+  }
+
+  /**
+   * 清理资源（包括记忆系统）
    */
   async cleanup(): Promise<void> {
-    if (this.agent) {
-      await this.agent.destroy();
-      this.agent = undefined;
+    console.log('🧹 清理带记忆功能的 MidsceneAgent...');
+
+    // 清理记忆系统
+    try {
+      await this.memoryService.cleanup();
+    } catch (error) {
+      console.warn('⚠️ 记忆系统清理时出现警告:', error);
     }
-    if (this.browser) {
-      await this.browser.close();
-      this.browser = undefined;
-    }
-    this.page = undefined;
+
+    // 清理基础 Agent
+    await super.cleanup();
+
+    console.log('✅ 清理完成');
   }
 }
 
 // 创建单例实例
-export const midsceneAgent = new MidsceneAgent();
+export const midsceneAgentWithMemory = new MidsceneAgentWithMemory();

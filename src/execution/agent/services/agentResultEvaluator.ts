@@ -178,27 +178,20 @@ export async function evaluateAgentResult(
 
     console.log('🔍 开始评估 Agent 结果...');
 
-    const response = await client.chat.completions.create(
-      {
-        model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content:
-              '你是一个专业的AI Agent测试结果评估专家。请仔细分析Agent的判断结果，并给出准确的评估。',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-        temperature: 0.1, // 降低随机性，保持评估一致性
-        max_tokens: 2000,
-      },
-      {
-        timeout: 30000, // 30秒超时
-      }
-    );
+    const response = await client.chat.completions.create({
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content:
+            '你是一个专业的AI Agent测试结果评估专家。请仔细分析Agent的判断结果，并给出准确的评估。',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+    });
 
     const content = response.choices[0]?.message?.content;
     if (!content) {
