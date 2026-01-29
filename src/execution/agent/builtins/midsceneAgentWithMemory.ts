@@ -7,7 +7,7 @@ import {
   MemoryService,
   type MemoryServiceConfig,
   type MemoryFormationInput,
-  type MemoryRetrievalInput
+  type MemoryRetrievalInput,
 } from '../services/memoryService/index.js';
 
 /**
@@ -75,8 +75,12 @@ export class MidsceneAgentWithMemory extends MidsceneAgent {
       // 1. 检索相关记忆并增强测试指令
       const enhancedContext = await this.enhanceContextWithMemory(ctx);
 
+      console.log('🚀 ~ MidsceneAgentWithMemory ~ runCase ~ enhancedContext:', enhancedContext);
+
       // 2. 执行测试（使用父类的逻辑）
       const result = await super.runCase(enhancedContext);
+
+      console.log('🚀 ~ MidsceneAgentWithMemory ~ runCase ~ result:', result);
 
       // 3. 异步形成记忆（如果有学习价值）
       await this.formMemoryAsync(ctx, result);
