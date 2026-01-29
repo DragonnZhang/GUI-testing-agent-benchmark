@@ -39,12 +39,14 @@ export class MidsceneAgent extends AgentAdapter {
 
     // 移除调用栈相关的信息（以 "at " 开头的行）
     const lines = message.split('\n');
-    const cleanedLines = lines.filter(line => {
+    const cleanedLines = lines.filter((line) => {
       const trimmedLine = line.trim();
-      return !trimmedLine.startsWith('at ') &&
-             !trimmedLine.includes('node_modules') &&
-             !trimmedLine.includes('file://') &&
-             !trimmedLine.includes('process.processTicksAndRejections');
+      return (
+        !trimmedLine.startsWith('at ') &&
+        !trimmedLine.includes('node_modules') &&
+        !trimmedLine.includes('file://') &&
+        !trimmedLine.includes('process.processTicksAndRejections')
+      );
     });
 
     return cleanedLines.join('\n').trim();
@@ -140,7 +142,7 @@ export class MidsceneAgent extends AgentAdapter {
     this.agent = new PuppeteerAgent(this.page, {
       generateReport: true,
       aiActContext:
-        '执行测试用例，关注页面显示和交互功能的正确性。如果不符合测试用例，请直接抛出错误。',
+        '执行测试用例，关注页面显示和交互功能的正确性。确保对所有的测试用例进行测试，并准确判断是否存在缺陷。最后返回正确或缺陷信息',
     });
   }
 
@@ -246,7 +248,11 @@ export class MidsceneAgent extends AgentAdapter {
 
       console.log(
         '🚀 ~ MidsceneAgent ~ runCase ~ 执行出错:',
-        this.cleanStackTrace(cleanedErr?.errorTask?.errorMessage || cleanedErr.message || 'Unknown error during Midscene execution')
+        this.cleanStackTrace(
+          cleanedErr?.errorTask?.errorMessage ||
+            cleanedErr.message ||
+            'Unknown error during Midscene execution'
+        )
       );
 
       // 提取 Agent 的判断结果（错误情况）
@@ -258,8 +264,11 @@ export class MidsceneAgent extends AgentAdapter {
 
       errors.push({
         message: cleanErrorMessage,
-        stack: err?.errorTask?.errorStack ? this.cleanStackTrace(err.errorTask.errorStack) :
-               err.stack ? this.cleanStackTrace(err.stack) : undefined,
+        stack: err?.errorTask?.errorStack
+          ? this.cleanStackTrace(err.errorTask.errorStack)
+          : err.stack
+            ? this.cleanStackTrace(err.stack)
+            : undefined,
       });
 
       rawOutput = {
