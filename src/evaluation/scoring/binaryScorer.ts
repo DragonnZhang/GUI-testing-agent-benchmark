@@ -39,7 +39,7 @@ export function scoreCase(execResult: CaseExecutionResult, testCase: TestCase): 
 
   // 对于 MidsceneAgent 和带记忆的 MidsceneAgent，如果有 LLM 评估结果，使用 LLM 的判断来确定 Agent 的预测准确性
   if (
-    (execResult.agentName === 'midscene' || execResult.agentName === 'midscene-memory') &&
+    // (execResult.agentName === 'midscene' || execResult.agentName === 'midscene-memory') &&
     execResult.result.rawOutput
   ) {
     const rawOutput = execResult.result.rawOutput as any;

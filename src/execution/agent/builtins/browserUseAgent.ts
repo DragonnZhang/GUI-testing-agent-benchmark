@@ -146,7 +146,7 @@ export class BrowserUseAgent extends AgentAdapter {
       // 执行 Python 桥接脚本
       const result = await execa(this.pythonPath, [bridgeScript], {
         input: JSON.stringify(inputData),
-        timeout: ctx.meta.timeoutMs + 30000, // 额外 30s 启动时间
+        timeout: 120000, // 120s 超时
         all: true, // 捕获 stdout 和 stderr
       });
 
