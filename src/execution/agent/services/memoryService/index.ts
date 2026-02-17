@@ -12,7 +12,7 @@ export type {
   MemoryContent,
   MemoryContext,
   ErrorAnalysis,
-  SimilarityMatch
+  SimilarityMatch,
 } from './types.js';
 
 // 导出服务组件（用于测试和扩展）

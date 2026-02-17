@@ -6,7 +6,7 @@ import type {
   MemoryFormationInput,
   MemoryRetrievalInput,
   MemoryRetrievalResult,
-  ErrorType
+  ErrorType,
 } from './types.js';
 import { FileStorage } from './storage/fileStorage.js';
 import { MemoryFormation } from './memoryFormation.js';
@@ -110,7 +110,7 @@ export class MemoryService {
       // 添加策略层指导
       if (result.guidance.strategies.length > 0) {
         guidance.push('## 🎯 策略指导');
-        result.guidance.strategies.forEach(strategy => {
+        result.guidance.strategies.forEach((strategy) => {
           guidance.push(strategy);
         });
       }
@@ -118,7 +118,7 @@ export class MemoryService {
       // 添加经验层指导
       if (result.guidance.experiences.length > 0) {
         guidance.push('## 💡 经验提醒');
-        result.guidance.experiences.forEach(experience => {
+        result.guidance.experiences.forEach((experience) => {
           guidance.push(experience);
         });
       }
@@ -126,7 +126,7 @@ export class MemoryService {
       // 添加案例层警告
       if (result.guidance.caseWarnings.length > 0) {
         guidance.push('## ⚠️ 注意事项');
-        result.guidance.caseWarnings.forEach(warning => {
+        result.guidance.caseWarnings.forEach((warning) => {
           guidance.push(warning);
         });
       }
@@ -253,7 +253,7 @@ export class MemoryService {
     }
 
     // 更新关键词索引
-    node.content.keywords.forEach(keyword => {
+    node.content.keywords.forEach((keyword) => {
       if (!indices.byKeywords[keyword]) {
         indices.byKeywords[keyword] = [];
       }
@@ -288,21 +288,20 @@ export class MemoryService {
 
     // 按类型统计
     const nodesByType: Record<string, number> = {};
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       nodesByType[node.type] = (nodesByType[node.type] || 0) + 1;
     });
 
     // 按错误类型统计
     const nodesByErrorType: Record<string, number> = {};
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       const errorType = node.context.errorType;
       nodesByErrorType[errorType] = (nodesByErrorType[errorType] || 0) + 1;
     });
 
     // 平均置信度
-    const averageConfidence = totalNodes > 0
-      ? nodes.reduce((sum, node) => sum + node.confidence, 0) / totalNodes
-      : 0;
+    const averageConfidence =
+      totalNodes > 0 ? nodes.reduce((sum, node) => sum + node.confidence, 0) / totalNodes : 0;
 
     return {
       totalNodes,

@@ -7,32 +7,32 @@ import type { AgentResultEvaluation } from '../agentResultEvaluator.js';
  * 错误类型分类体系
  */
 export const ErrorType = {
-  STATE_DETECTION_ERROR: "state_detection_error",
-  ASYNC_TIMING_ERROR: "async_timing_error",
-  ELEMENT_LOCATING_ERROR: "element_locating_error",
-  CONTENT_VALIDATION_ERROR: "content_validation_error",
-  INTERACTION_SEQUENCE_ERROR: "interaction_sequence_error",
-  FORM_VALIDATION_ERROR: "form_validation_error",
-  BUSINESS_RULE_ERROR: "business_rule_error",
-  EDGE_CASE_ERROR: "edge_case_error",
-  OTHER_ERROR: "other_error"
+  STATE_DETECTION_ERROR: 'state_detection_error',
+  ASYNC_TIMING_ERROR: 'async_timing_error',
+  ELEMENT_LOCATING_ERROR: 'element_locating_error',
+  CONTENT_VALIDATION_ERROR: 'content_validation_error',
+  INTERACTION_SEQUENCE_ERROR: 'interaction_sequence_error',
+  FORM_VALIDATION_ERROR: 'form_validation_error',
+  BUSINESS_RULE_ERROR: 'business_rule_error',
+  EDGE_CASE_ERROR: 'edge_case_error',
+  OTHER_ERROR: 'other_error',
 } as const;
 
-export type ErrorType = typeof ErrorType[keyof typeof ErrorType];
+export type ErrorType = (typeof ErrorType)[keyof typeof ErrorType];
 
 /**
  * 记忆节点类型
  */
 export const MemoryNodeType = {
   /** 案例节点：具体的错误实例 */
-  CASE: "case",
+  CASE: 'case',
   /** 经验节点：从多个案例中抽象的经验 */
-  EXPERIENCE: "experience",
+  EXPERIENCE: 'experience',
   /** 策略节点：高层次的通用指导策略 */
-  STRATEGY: "strategy"
+  STRATEGY: 'strategy',
 } as const;
 
-export type MemoryNodeType = typeof MemoryNodeType[keyof typeof MemoryNodeType];
+export type MemoryNodeType = (typeof MemoryNodeType)[keyof typeof MemoryNodeType];
 
 /**
  * 记忆内容结构

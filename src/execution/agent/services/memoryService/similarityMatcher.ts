@@ -1,11 +1,6 @@
 // src/execution/agent/services/memoryService/similarityMatcher.ts - 相似度匹配服务
 
-import type {
-  MemoryNode,
-  SimilarityMatch,
-  MemoryRetrievalInput,
-  MemoryContext
-} from './types.js';
+import type { MemoryNode, SimilarityMatch, MemoryRetrievalInput, MemoryContext } from './types.js';
 
 /**
  * 相似度匹配服务
@@ -28,17 +23,18 @@ export class SimilarityMatcher {
 
     // 加权计算总体相似度
     const weights = {
-      sceneMatch: 1.0,     // 精确匹配权重最高
-      errorTypeMatch: 0.9,  // 错误类型很重要
-      keywordMatch: 0.8,    // 关键词匹配重要
-      semanticMatch: 0.6,   // 语义匹配作为补充
+      sceneMatch: 1.0, // 精确匹配权重最高
+      errorTypeMatch: 0.9, // 错误类型很重要
+      keywordMatch: 0.8, // 关键词匹配重要
+      semanticMatch: 0.6, // 语义匹配作为补充
     };
 
     const totalWeight = Object.values(weights).reduce((sum, weight) => sum + weight, 0);
-    const score = Object.entries(dimensions).reduce(
-      (sum, [key, value]) => sum + value * weights[key as keyof typeof weights],
-      0
-    ) / totalWeight;
+    const score =
+      Object.entries(dimensions).reduce(
+        (sum, [key, value]) => sum + value * weights[key as keyof typeof weights],
+        0
+      ) / totalWeight;
 
     return {
       nodeId: node.id,
@@ -67,7 +63,10 @@ export class SimilarityMatcher {
   /**
    * 计算错误类型匹配度
    */
-  private calculateErrorTypeMatch(nodeContext: MemoryContext, currentContext: MemoryContext): number {
+  private calculateErrorTypeMatch(
+    nodeContext: MemoryContext,
+    currentContext: MemoryContext
+  ): number {
     if (nodeContext.errorType === currentContext.errorType) {
       return 1.0;
     }
@@ -98,10 +97,8 @@ export class SimilarityMatcher {
     }
 
     // 计算关键词重叠度
-    const matches = nodeKeywords.filter(keyword =>
-      allCurrentWords.some(word =>
-        this.isKeywordMatch(keyword.toLowerCase(), word.toLowerCase())
-      )
+    const matches = nodeKeywords.filter((keyword) =>
+      allCurrentWords.some((word) => this.isKeywordMatch(keyword.toLowerCase(), word.toLowerCase()))
     );
 
     return matches.length / nodeKeywords.length;
@@ -110,7 +107,10 @@ export class SimilarityMatcher {
   /**
    * 计算语义匹配度（简化版本）
    */
-  private calculateSemanticMatch(nodeContext: MemoryContext, currentContext: MemoryContext): number {
+  private calculateSemanticMatch(
+    nodeContext: MemoryContext,
+    currentContext: MemoryContext
+  ): number {
     let score = 0.0;
     let factors = 0;
 
@@ -135,8 +135,12 @@ export class SimilarityMatcher {
     }
 
     // UI元素类型匹配
-    if (nodeContext.uiElementTypes && currentContext.uiElementTypes &&
-        nodeContext.uiElementTypes.length > 0 && currentContext.uiElementTypes.length > 0) {
+    if (
+      nodeContext.uiElementTypes &&
+      currentContext.uiElementTypes &&
+      nodeContext.uiElementTypes.length > 0 &&
+      currentContext.uiElementTypes.length > 0
+    ) {
       factors++;
       const elementSimilarity = this.calculateArraySimilarity(
         nodeContext.uiElementTypes,
@@ -164,15 +168,15 @@ export class SimilarityMatcher {
    */
   private getRelatedErrorTypes(errorType: string): string[] {
     const relatedTypes: Record<string, string[]> = {
-      'state_detection_error': ['async_timing_error', 'content_validation_error'],
-      'async_timing_error': ['state_detection_error', 'element_locating_error'],
-      'element_locating_error': ['async_timing_error', 'state_detection_error'],
-      'content_validation_error': ['state_detection_error', 'business_rule_error'],
-      'interaction_sequence_error': ['state_detection_error', 'async_timing_error'],
-      'form_validation_error': ['content_validation_error', 'business_rule_error'],
-      'business_rule_error': ['content_validation_error', 'form_validation_error'],
-      'edge_case_error': ['other_error'],
-      'other_error': ['edge_case_error'],
+      state_detection_error: ['async_timing_error', 'content_validation_error'],
+      async_timing_error: ['state_detection_error', 'element_locating_error'],
+      element_locating_error: ['async_timing_error', 'state_detection_error'],
+      content_validation_error: ['state_detection_error', 'business_rule_error'],
+      interaction_sequence_error: ['state_detection_error', 'async_timing_error'],
+      form_validation_error: ['content_validation_error', 'business_rule_error'],
+      business_rule_error: ['content_validation_error', 'form_validation_error'],
+      edge_case_error: ['other_error'],
+      other_error: ['edge_case_error'],
     };
 
     return relatedTypes[errorType] || [];
@@ -188,7 +192,7 @@ export class SimilarityMatcher {
       .toLowerCase()
       .replace(/[^\w\u4e00-\u9fff\s]/g, ' ') // 保留中英文字符和数字
       .split(/\s+/)
-      .filter(word => word.length > 1) // 过滤太短的词
+      .filter((word) => word.length > 1) // 过滤太短的词
       .slice(0, 10); // 限制关键词数量
   }
 
@@ -217,10 +221,10 @@ export class SimilarityMatcher {
    * 检查路径段的共同性
    */
   private hasCommonPathSegments(path1: string, path2: string): boolean {
-    const segments1 = path1.split('/').filter(s => s.length > 0);
-    const segments2 = path2.split('/').filter(s => s.length > 0);
+    const segments1 = path1.split('/').filter((s) => s.length > 0);
+    const segments2 = path2.split('/').filter((s) => s.length > 0);
 
-    const commonSegments = segments1.filter(seg => segments2.includes(seg));
+    const commonSegments = segments1.filter((seg) => segments2.includes(seg));
     return commonSegments.length > 0;
   }
 
@@ -239,7 +243,7 @@ export class SimilarityMatcher {
       return 0.0;
     }
 
-    const commonWords = words1.filter(word => words2.includes(word));
+    const commonWords = words1.filter((word) => words2.includes(word));
     const totalWords = new Set([...words1, ...words2]).size;
 
     return commonWords.length / totalWords;
@@ -257,7 +261,7 @@ export class SimilarityMatcher {
       return 0.0;
     }
 
-    const common = array1.filter(item => array2.includes(item));
+    const common = array1.filter((item) => array2.includes(item));
     const total = new Set([...array1, ...array2]).size;
 
     return common.length / total;
@@ -272,7 +276,7 @@ export class SimilarityMatcher {
     maxResults: number = 10
   ): SimilarityMatch[] {
     return matches
-      .filter(match => match.score >= threshold)
+      .filter((match) => match.score >= threshold)
       .sort((a, b) => b.score - a.score)
       .slice(0, maxResults);
   }
