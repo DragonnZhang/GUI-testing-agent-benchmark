@@ -6,6 +6,7 @@ import { midsceneAgent } from './midsceneAgent.js';
 import { midsceneAgentWithMemory } from './midsceneAgentWithMemory.js';
 import { stagehandAgent } from './stagehandAgent.js';
 import { browserUseAgent } from './browserUseAgent.js';
+import { autoInspectorAgent } from './autoInspectorAgent.js';
 
 /**
  * 注册所有内置 Agent
@@ -39,6 +40,10 @@ export function registerBuiltinAgents(): void {
   if (!agentRegistry.has('browser-use')) {
     agentRegistry.register(browserUseAgent);
   }
+
+  if (!agentRegistry.has('auto-inspector')) {
+    agentRegistry.register(autoInspectorAgent);
+  }
 }
 
 // 导出内置 Agent 以便外部直接使用
@@ -50,4 +55,5 @@ export {
   midsceneAgentWithMemory,
   stagehandAgent,
   browserUseAgent,
+  autoInspectorAgent,
 };
