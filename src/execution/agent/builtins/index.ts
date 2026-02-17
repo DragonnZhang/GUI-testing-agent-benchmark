@@ -5,6 +5,7 @@ import { dummyAgent, noopAgent, alwaysDefectAgent } from './dummyAgent.js';
 import { midsceneAgent } from './midsceneAgent.js';
 import { midsceneAgentWithMemory } from './midsceneAgentWithMemory.js';
 import { stagehandAgent } from './stagehandAgent.js';
+import { browserUseAgent } from './browserUseAgent.js';
 
 /**
  * 注册所有内置 Agent
@@ -34,7 +35,19 @@ export function registerBuiltinAgents(): void {
   if (!agentRegistry.has('stagehand')) {
     agentRegistry.register(stagehandAgent);
   }
+
+  if (!agentRegistry.has('browser-use')) {
+    agentRegistry.register(browserUseAgent);
+  }
 }
 
 // 导出内置 Agent 以便外部直接使用
-export { dummyAgent, noopAgent, alwaysDefectAgent, midsceneAgent, midsceneAgentWithMemory, stagehandAgent };
+export {
+  dummyAgent,
+  noopAgent,
+  alwaysDefectAgent,
+  midsceneAgent,
+  midsceneAgentWithMemory,
+  stagehandAgent,
+  browserUseAgent,
+};

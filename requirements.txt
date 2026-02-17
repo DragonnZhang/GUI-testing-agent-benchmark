@@ -1,0 +1,5 @@
+# Browser-use Python dependencies for UI Agent Benchmark
+# Requires Python 3.11+
+
+browser-use>=0.5.0
+python-dotenv>=1.0.0

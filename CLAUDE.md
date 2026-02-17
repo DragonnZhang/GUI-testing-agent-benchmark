@@ -33,6 +33,40 @@ pnpm uibench report runs/<runId>            # 重新生成报告
 ### Environment Setup
 - 复制 `.env.example` 为 `.env` 并配置 Midscene AI 模型参数（如果使用 midscene agent）
 - Node.js >= 20 是必需的
+- **Python 3.11+ 是必需的（用于 browser-use Agent）**
+
+### Browser-use Agent Setup
+Browser-use 是一个 Python AI 浏览器自动化库，需要额外的 Python 依赖：
+
+```bash
+# 安装 Python 依赖（需要 Python 3.11+）
+pip install -r requirements.txt
+# 或使用 uv
+uv pip install -r requirements.txt
+
+# 验证安装
+python3 -c "from browser_use import Agent; print('OK')"
+```
+
+配置 `.env` 文件（复用 OpenAI 配置）：
+```bash
+OPENAI_API_KEY="your-api-key"
+OPENAI_BASE_URL="https://api.openai.com/v1"  # 或其他兼容的 OpenAI API 服务
+OPENAI_MODEL_NAME="gpt-4o"  # 或其他支持的模型
+
+# 可选：指定 Python 路径
+PYTHON_PATH=/usr/bin/python3  # 或你的 Python 3.11+ 路径
+```
+
+运行 browser-use Agent：
+```bash
+# 运行单个测试用例
+pnpm uibench run -a browser-use --filter-cases TC_001
+
+# 对比多个 Agent
+pnpm uibench run -a browser-use,midscene,stagehand
+```
+- **Browser-use Agent 需要 Python 3.11+ 和额外的 Python 依赖**（见下方 Browser-use Agent 配置）
 
 ## Architecture
 
@@ -52,7 +86,13 @@ Visualization Layer (src/visualization/)
 **Agent System (`src/execution/agent/`)**
 - `AgentAdapter` - 抽象基类，所有 Agent 必须继承
 - `agentRegistry` - Agent 注册表，运行时发现机制
-- `builtins/` - 内置 Agent 实现（dummy, noop, midscene 等）
+- `builtins/` - 内置 Agent 实现：
+  - `dummy` - 测试用虚拟 Agent
+  - `noop` - 无操作 Agent（用于基准测试）
+  - `midscene` - Midscene AI 测试框架
+  - `midscene-memory` - 带记忆功能的 Midscene Agent
+  - `stagehand` - Stagehand AI 浏览器自动化
+  - `browser-use` - Browser-use Python AI 自动化（通过桥接脚本）
 
 **React Dev Server Management (`src/execution/appManager/`)**
 - `ReactDevServerManager` - 自动启动本地 React 项目
@@ -152,6 +192,8 @@ export class MyAgent extends AgentAdapter {
 ## Key Dependencies
 
 - `@midscene/web` - AI 驱动的 UI 测试框架
+- `@browserbasehq/stagehand` - 另一个 AI 浏览器自动化框架
+- `browser-use` (Python) - Python AI 浏览器自动化库（通过桥接脚本集成）
 - `zod` - 数据验证和类型安全
 - `commander` - CLI 框架
 - `puppeteer` - 浏览器自动化

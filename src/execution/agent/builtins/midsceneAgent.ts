@@ -213,7 +213,7 @@ export class MidsceneAgent extends AgentAdapter {
 
       // 执行 AI 测试指令
       const result = await this.agent.aiAct(ctx.prompt, {
-        deepThink: true,
+        deepThink: false,
       });
       console.log('🚀 ~ MidsceneAgent ~ runCase ~ result:', result);
 
