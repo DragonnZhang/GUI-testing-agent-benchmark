@@ -13,17 +13,17 @@ import { autoInspectorAgent } from './autoInspectorAgent.js';
  */
 export function registerBuiltinAgents(): void {
   // 防止重复注册
-  if (!agentRegistry.has('dummy')) {
-    agentRegistry.register(dummyAgent);
-  }
+  // if (!agentRegistry.has('dummy')) {
+  //   agentRegistry.register(dummyAgent);
+  // }
 
-  if (!agentRegistry.has('noop')) {
-    agentRegistry.register(noopAgent);
-  }
+  // if (!agentRegistry.has('noop')) {
+  //   agentRegistry.register(noopAgent);
+  // }
 
-  if (!agentRegistry.has('always-defect')) {
-    agentRegistry.register(alwaysDefectAgent);
-  }
+  // if (!agentRegistry.has('always-defect')) {
+  //   agentRegistry.register(alwaysDefectAgent);
+  // }
 
   if (!agentRegistry.has('midscene')) {
     agentRegistry.register(midsceneAgent);
@@ -33,9 +33,9 @@ export function registerBuiltinAgents(): void {
     agentRegistry.register(midsceneAgentWithMemory);
   }
 
-  if (!agentRegistry.has('stagehand')) {
-    agentRegistry.register(stagehandAgent);
-  }
+  // if (!agentRegistry.has('stagehand')) {
+  //   agentRegistry.register(stagehandAgent);
+  // }
 
   if (!agentRegistry.has('browser-use')) {
     agentRegistry.register(browserUseAgent);

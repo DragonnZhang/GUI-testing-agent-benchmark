@@ -121,12 +121,18 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
     return;
   }
 
+  // 处理 -a all，自动展开为所有已注册的 agent
+  const agentNamesInput = options.agents.split(',').map((a: string) => a.trim());
+  const agentNames = agentNamesInput.includes('all')
+    ? agentRegistry.listNames()
+    : agentNamesInput;
+
   // 解析配置
   const config = parseRunConfig({
     scenesPath: options.scenes,
     casesPath: options.cases,
     outputDir: options.output,
-    agents: options.agents.split(',').map((a) => a.trim()),
+    agents: agentNames,
     concurrency: parseInt(options.concurrency, 10),
     timeout: parseInt(options.timeout, 10),
   });
@@ -165,7 +171,6 @@ export async function runCommand(options: RunCommandOptions): Promise<void> {
   console.log(`📦 Loaded ${scenes.length} scene(s), ${testCases.length} test case(s)`);
 
   // 验证 Agents
-  const agentNames = config.agents;
   const missingAgents = agentNames.filter((name) => !agentRegistry.has(name));
   if (missingAgents.length > 0) {
     console.error(`❌ Unknown agents: ${missingAgents.join(', ')}`);
