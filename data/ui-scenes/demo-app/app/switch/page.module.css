@@ -1,0 +1,147 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.switchContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.switchGroup {
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.groupTitle {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+}
+
+.switchItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #333;
+}
+
+.switchItem:last-child {
+  border-bottom: none;
+}
+
+.switchInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.switchIcon {
+  font-size: 1.25rem;
+}
+
+.switchText {
+  display: flex;
+  flex-direction: column;
+}
+
+.switchLabel {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.switchStatus {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.switch {
+  width: 52px;
+  height: 32px;
+  background-color: #444;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s;
+  padding: 0;
+}
+
+.switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switchOn {
+  background-color: #34c759;
+}
+
+.switchThumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 28px;
+  height: 28px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.switchOn .switchThumb {
+  transform: translateX(20px);
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .switchGroup {
+    background-color: #f5f5f5;
+  }
+
+  .switchItem {
+    border-bottom-color: #ddd;
+  }
+
+  .switch {
+    background-color: #ccc;
+  }
+
+  .switchOn {
+    background-color: #34c759;
+  }
+}

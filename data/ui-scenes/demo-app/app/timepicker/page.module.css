@@ -1,0 +1,174 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.timepickerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timepicker {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background-color: #2a2a2a;
+  border-radius: 12px;
+}
+
+.timeColumn,
+.periodColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timeLabel {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.timeSelect {
+  padding: 0.5rem 0.75rem;
+  font-size: 1.5rem;
+  background-color: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 8px;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  min-width: 70px;
+  text-align: center;
+}
+
+.timeSelect:focus {
+  border-color: #646cff;
+}
+
+.timeSeparator {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #888;
+  padding-bottom: 0.5rem;
+}
+
+.periodButtons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.periodButton {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  background-color: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 6px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.periodButtonActive {
+  background-color: #646cff;
+  border-color: #646cff;
+  color: white;
+}
+
+.selectedTime {
+  text-align: center;
+  padding: 1rem;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+}
+
+.quickSelect {
+  text-align: center;
+}
+
+.quickSelectTitle {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+}
+
+.quickButtons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.quickButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: #2a2a2a;
+  border: none;
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.quickButton:hover {
+  background-color: #333;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .timepicker,
+  .selectedTime {
+    background-color: #f5f5f5;
+  }
+
+  .timeSelect {
+    background-color: #fff;
+    border-color: #ddd;
+  }
+
+  .periodButton {
+    background-color: #fff;
+    border-color: #ddd;
+  }
+
+  .quickButton {
+    background-color: #eee;
+  }
+
+  .quickButton:hover {
+    background-color: #ddd;
+  }
+}

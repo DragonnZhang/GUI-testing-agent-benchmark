@@ -1,0 +1,236 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.skeletonContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.skeletonSection {
+  width: 100%;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+}
+
+.skeletonCard {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+}
+
+.skeletonAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+
+.skeletonContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeletonTitle {
+  height: 20px;
+  width: 40%;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonText {
+  height: 14px;
+  width: 80%;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeletonListItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+}
+
+.skeletonIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  flex-shrink: 0;
+}
+
+.skeletonLines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skeletonLine {
+  height: 12px;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonLineShort {
+  height: 12px;
+  width: 60%;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonArticle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background-color: #2a2a2a;
+  border-radius: 8px;
+}
+
+.skeletonHeader {
+  height: 28px;
+  width: 70%;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonMeta {
+  height: 14px;
+  width: 40%;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonParagraph {
+  height: 12px;
+  width: 100%;
+  background: linear-gradient(90deg, #333 25%, #3a3a3a 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeletonHeaderStatic,
+.skeletonMetaStatic,
+.skeletonParagraphStatic {
+  background: #333;
+  border-radius: 4px;
+}
+
+.skeletonHeaderStatic {
+  height: 28px;
+  width: 70%;
+}
+
+.skeletonMetaStatic {
+  height: 14px;
+  width: 40%;
+}
+
+.skeletonParagraphStatic {
+  height: 12px;
+  width: 100%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .skeletonCard,
+  .skeletonListItem,
+  .skeletonArticle {
+    background-color: #f5f5f5;
+  }
+
+  .skeletonAvatar,
+  .skeletonTitle,
+  .skeletonText,
+  .skeletonIcon,
+  .skeletonLine,
+  .skeletonLineShort,
+  .skeletonHeader,
+  .skeletonMeta,
+  .skeletonParagraph {
+    background: linear-gradient(90deg, #e0e0e0 25%, #eee 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+  }
+
+  .skeletonHeaderStatic,
+  .skeletonMetaStatic,
+  .skeletonParagraphStatic {
+    background: #e0e0e0;
+  }
+}

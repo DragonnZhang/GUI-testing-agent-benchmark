@@ -1,0 +1,235 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.tabsContainer {
+  width: 100%;
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tabList {
+  display: flex;
+  border-bottom: 1px solid #333;
+  background-color: #1a1a1a;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 1rem;
+  font-size: 0.95rem;
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.25s;
+  border-bottom: 2px solid transparent;
+}
+
+.tabButton:hover {
+  color: #ccc;
+  background-color: #252525;
+}
+
+.tabButtonActive {
+  color: #646cff;
+  border-bottom-color: #646cff;
+  background-color: #2a2a2a;
+}
+
+.tabContent {
+  padding: 2rem;
+  min-height: 300px;
+}
+
+.contentTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.contentDescription {
+  color: #888;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.statCard {
+  background-color: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #646cff;
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+}
+
+.featureItem {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #333;
+  color: #ccc;
+}
+
+.featureItem:last-child {
+  border-bottom: none;
+}
+
+.wrongList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #ccc;
+}
+
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.planCard {
+  background-color: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.planName {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.planPrice {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #646cff;
+  margin-bottom: 1rem;
+}
+
+.planFeatures {
+  list-style: none;
+  padding: 0;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.planFeatures li {
+  padding: 0.25rem 0;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.faqItem {
+  background-color: #1a1a1a;
+  padding: 1.25rem;
+  border-radius: 8px;
+}
+
+.faqQuestion {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+}
+
+.faqAnswer {
+  color: #888;
+  line-height: 1.5;
+}
+
+.footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .tabsContainer {
+    background-color: #f5f5f5;
+  }
+
+  .tabList {
+    background-color: #fff;
+    border-bottom-color: #ddd;
+  }
+
+  .tabButton:hover {
+    background-color: #f9f9f9;
+  }
+
+  .tabButtonActive {
+    background-color: #f5f5f5;
+  }
+
+  .statCard,
+  .planCard,
+  .faqItem {
+    background-color: #fff;
+  }
+
+  .featureItem {
+    border-bottom-color: #ddd;
+  }
+}
+
+@media (max-width: 600px) {
+  .statsGrid,
+  .plansGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabList {
+    flex-wrap: wrap;
+  }
+
+  .tabButton {
+    flex: 1 1 50%;
+  }
+}

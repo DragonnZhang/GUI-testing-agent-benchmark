@@ -1,0 +1,154 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.timeline {
+  width: 100%;
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timelineItem {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.timelineItem:last-child {
+  padding-bottom: 0;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -2rem;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #444;
+  border: 3px solid #1a1a1a;
+}
+
+.timelineDot.completed {
+  background-color: #51cf66;
+}
+
+.timelineDot.current {
+  background-color: #646cff;
+  box-shadow: 0 0 0 4px #646cff40;
+}
+
+.timelineDot.pending {
+  background-color: #888;
+}
+
+.timelineLine {
+  position: absolute;
+  left: calc(-2rem + 7px);
+  top: 16px;
+  bottom: 0;
+  width: 2px;
+  background-color: #333;
+}
+
+.timelineLineCompleted {
+  background-color: #51cf66;
+}
+
+.timelineContent {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.timelineHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.timelineDate {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.timelineStatus {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.timelineStatus.completed {
+  background-color: #51cf6620;
+  color: #51cf66;
+}
+
+.timelineStatus.current {
+  background-color: #646cff20;
+  color: #646cff;
+}
+
+.timelineStatus.pending {
+  background-color: #88888820;
+  color: #888;
+}
+
+.timelineTitle {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.timelineDescription {
+  font-size: 0.9rem;
+  color: #888;
+  margin: 0;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .timelineDot {
+    border-color: white;
+  }
+
+  .timelineContent {
+    background-color: #f5f5f5;
+  }
+
+  .timelineLine {
+    background-color: #ddd;
+  }
+
+  .timelineLineCompleted {
+    background-color: #51cf66;
+  }
+}

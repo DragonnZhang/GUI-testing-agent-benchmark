@@ -6,11 +6,7 @@
     "case_type": "功能缺陷",
     "case_category": "正例",
     "prompt": "请检测 Todo 应用页面是否正常工作：1. 页面标题'Todo 应用'是否显示；2. 任务列表是否正常渲染；3. 添加任务输入框和按钮是否存在；4. 统计信息（总计、已完成、未完成）是否显示",
-    "ground_truth": {
-      "has_defect": false,
-      "defect_details": [],
-      "defect_level": null
-    }
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
   },
   {
     "case_id": "CASE_002",
@@ -19,16 +15,7 @@
     "case_type": "功能缺陷",
     "case_category": "反例",
     "prompt": "请检测 Todo 应用 V2 页面：1. 添加按钮是否可以正常点击；2. 已完成和未完成的统计数据是否正确；3. 删除按钮的文字是否正确显示为'删除'；4. 页面底部是否有返回首页的链接",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "添加按钮被禁用，无法点击添加新任务",
-        "已完成和未完成的统计数据计算逻辑错误，显示的数值是反的",
-        "删除按钮的文字错误显示为'保存'而不是'删除'",
-        "页面底部缺少返回首页的链接"
-      ],
-      "defect_level": "high"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["添加按钮被禁用，无法点击添加新任务", "已完成和未完成的统计数据计算逻辑错误，显示的数值是反的", "删除按钮的文字错误显示为'保存'而不是'删除'", "页面底部缺少返回首页的链接"], "defect_level": "high" }
   },
   {
     "case_id": "CASE_003",
@@ -37,13 +24,7 @@
     "case_type": "显示缺陷",
     "case_category": "反例",
     "prompt": "请检测 Todo 应用 V2 页面的统计信息是否准确：当前有3个任务，其中1个已完成，2个未完成，请验证页面显示的统计数据是否与实际情况一致",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "统计信息显示错误：已完成显示为2项（实际应为1项），未完成显示为1项（实际应为2项）"
-      ],
-      "defect_level": "medium"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["统计信息显示错误：已完成显示为2项（实际应为1项），未完成显示为1项（实际应为2项）"], "defect_level": "medium" }
   },
   {
     "case_id": "CASE_004",
@@ -52,11 +33,7 @@
     "case_type": "功能缺陷",
     "case_category": "正例",
     "prompt": "请检测登录页面是否正常工作：1. 页面标题'用户登录'是否显示；2. 邮箱输入框的标签是否为'邮箱地址'；3. 密码输入框是否为密码类型（输入时隐藏）；4. 登录按钮文字是否为'登录'；5. 是否有'返回首页'的链接",
-    "ground_truth": {
-      "has_defect": false,
-      "defect_details": [],
-      "defect_level": null
-    }
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
   },
   {
     "case_id": "CASE_005",
@@ -65,16 +42,7 @@
     "case_type": "功能缺陷",
     "case_category": "反例",
     "prompt": "请检测登录页面 V2：1. 邮箱输入框的标签是否正确显示为'邮箱地址'；2. 密码输入框是否为密码类型（不能明文显示）；3. 登录按钮文字是否为'登录'；4. 登录成功后是否有返回首页的链接",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "邮箱输入框的标签错误显示为'用户名'而不是'邮箱地址'",
-        "密码输入框类型为text，会明文显示密码",
-        "登录按钮文字错误显示为'确认'而不是'登录'",
-        "登录成功后缺少返回首页的链接"
-      ],
-      "defect_level": "high"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["邮箱输入框的标签错误显示为'用户名'而不是'邮箱地址'", "密码输入框类型为text，会明文显示密码", "登录按钮文字错误显示为'确认'而不是'登录'", "登录成功后缺少返回首页的链接"], "defect_level": "high" }
   },
   {
     "case_id": "CASE_006",
@@ -83,13 +51,7 @@
     "case_type": "安全缺陷",
     "case_category": "反例",
     "prompt": "请检测登录页面 V2 的密码安全性：密码输入框在输入时是否会隐藏密码字符，防止被旁人偷窥",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "密码输入框type设置为text而非password，密码会明文显示，存在安全隐患"
-      ],
-      "defect_level": "high"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["密码输入框type设置为text而非password，密码会明文显示，存在安全隐患"], "defect_level": "high" }
   },
   {
     "case_id": "CASE_007",
@@ -98,11 +60,7 @@
     "case_type": "功能缺陷",
     "case_category": "正例",
     "prompt": "请检测购物车页面是否正常工作：1. 页面标题是否包含'购物车'；2. 商品列表是否正确显示；3. 数量增减按钮是否可用；4. 商品小计是否等于单价乘以数量；5. 总价计算是否正确",
-    "ground_truth": {
-      "has_defect": false,
-      "defect_details": [],
-      "defect_level": null
-    }
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
   },
   {
     "case_id": "CASE_008",
@@ -111,16 +69,7 @@
     "case_type": "功能缺陷",
     "case_category": "反例",
     "prompt": "请检测购物车 V2 页面的价格计算：1. 商品小计是否正确（单价×数量）；2. 总价是否包含正确的运费逻辑；3. 数量增减按钮是否都可用；4. 页面底部是否有返回首页的链接",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "商品小计计算错误，没有乘以数量",
-        "减少数量的按钮被禁用，无法减少商品数量",
-        "页面底部缺少返回首页的链接",
-        "总价计算逻辑有误"
-      ],
-      "defect_level": "high"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["商品小计计算错误，没有乘以数量", "减少数量的按钮被禁用，无法减少商品数量", "页面底部缺少返回首页的链接", "总价计算逻辑有误"], "defect_level": "high" }
   },
   {
     "case_id": "CASE_009",
@@ -129,13 +78,7 @@
     "case_type": "显示缺陷",
     "case_category": "反例",
     "prompt": "请检测购物车 V2 页面：AirPods Pro 单价1999元，数量2个，该商品的小计应该显示为多少？请验证页面显示是否正确",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "AirPods Pro 小计应显示 ¥3,998（1999×2），但页面错误显示为 ¥1,999"
-      ],
-      "defect_level": "high"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["AirPods Pro 小计应显示 ¥3,998（1999×2），但页面错误显示为 ¥1,999"], "defect_level": "high" }
   },
   {
     "case_id": "CASE_010",
@@ -144,11 +87,7 @@
     "case_type": "功能缺陷",
     "case_category": "正例",
     "prompt": "请检测用户资料页面是否正常工作：1. 用户名称'张小明'是否正确显示；2. 粉丝数和关注数是否分别显示；3. 编辑资料按钮是否可用；4. 联系方式中邮箱标签是否为'邮箱'；5. 是否有返回首页的链接",
-    "ground_truth": {
-      "has_defect": false,
-      "defect_details": [],
-      "defect_level": null
-    }
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
   },
   {
     "case_id": "CASE_011",
@@ -157,16 +96,7 @@
     "case_type": "显示缺陷",
     "case_category": "反例",
     "prompt": "请检测用户资料 V2 页面的信息显示：1. 用户名是否正确显示为'张小明'；2. 粉丝数1024和关注数256是否正确对应显示；3. 邮箱标签是否为'邮箱'；4. 收藏标签是否为'收藏'",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "用户名显示错误，显示的是邮箱地址而不是名字'张小明'",
-        "粉丝数和关注数显示反了：粉丝显示256（实际应为1024），关注显示1024（实际应为256）",
-        "邮箱标签错误显示为'地址'",
-        "收藏标签错误显示为'书签'"
-      ],
-      "defect_level": "medium"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["用户名显示错误，显示的是邮箱地址而不是名字'张小明'", "粉丝数和关注数显示反了：粉丝显示256（实际应为1024），关注显示1024（实际应为256）", "邮箱标签错误显示为'地址'", "收藏标签错误显示为'书签'"], "defect_level": "medium" }
   },
   {
     "case_id": "CASE_012",
@@ -175,14 +105,7 @@
     "case_type": "功能缺陷",
     "case_category": "反例",
     "prompt": "请检测用户资料 V2 页面的交互功能：1. 编辑资料按钮是否可以点击；2. 页面底部是否有返回首页的链接",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "编辑资料按钮被禁用，无法点击",
-        "页面底部缺少返回首页的链接"
-      ],
-      "defect_level": "medium"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["编辑资料按钮被禁用，无法点击", "页面底部缺少返回首页的链接"], "defect_level": "medium" }
   },
   {
     "case_id": "CASE_013",
@@ -191,11 +114,7 @@
     "case_type": "功能缺陷",
     "case_category": "正例",
     "prompt": "请检测计数器页面是否正常工作：1. 页面标题是否包含'计数器'；2. 点击+按钮后计数是否增加；3. 点击-按钮后计数是否减少；4. ×2按钮是否能将数值翻倍；5. 是否有返回首页的链接",
-    "ground_truth": {
-      "has_defect": false,
-      "defect_details": [],
-      "defect_level": null
-    }
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
   },
   {
     "case_id": "CASE_014",
@@ -204,14 +123,7 @@
     "case_type": "功能缺陷",
     "case_category": "反例",
     "prompt": "请检测计数器 V2 页面：1. 页面标题是否正确显示为'计数器'；2. 撤销按钮是否可用",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "页面标题错误显示为'计算器'而不是'计数器'",
-        "撤销按钮被禁用，无法使用撤销功能"
-      ],
-      "defect_level": "high"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["页面标题错误显示为'计算器'而不是'计数器'", "撤销按钮被禁用，无法使用撤销功能"], "defect_level": "high" }
   },
   {
     "case_id": "CASE_015",
@@ -220,13 +132,7 @@
     "case_type": "显示缺陷",
     "case_category": "反例",
     "prompt": "请检测计数器 V2 页面的按钮显示：红色按钮显示的是加号还是减号？绿色按钮显示的是加号还是减号？按钮的颜色和符号是否符合常规设计（红色通常表示减少，绿色表示增加）",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "按钮显示与颜色不匹配：红色按钮显示+号，绿色按钮显示-号，与常规UI设计相反"
-      ],
-      "defect_level": "medium"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["按钮显示与颜色不匹配：红色按钮显示+号，绿色按钮显示-号，与常规UI设计相反"], "defect_level": "medium" }
   },
   {
     "case_id": "CASE_016",
@@ -235,11 +141,7 @@
     "case_type": "功能缺陷",
     "case_category": "正例",
     "prompt": "请检测数据表格页面是否正常工作：1. 页面标题是否包含'员工数据表'；2. 搜索框是否能按姓名搜索；3. 部门筛选是否正常工作；4. 点击列标题是否能排序；5. 是否有返回首页的链接",
-    "ground_truth": {
-      "has_defect": false,
-      "defect_details": [],
-      "defect_level": null
-    }
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
   },
   {
     "case_id": "CASE_017",
@@ -248,14 +150,7 @@
     "case_type": "功能缺陷",
     "case_category": "反例",
     "prompt": "请检测数据表格 V2 页面的筛选功能：1. 搜索框输入'张三'是否能找到该员工；2. 状态筛选选择'在职'后是否只显示在职员工",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "搜索功能异常：搜索框只能按部门搜索，无法按姓名'张三'搜索",
-        "状态筛选逻辑反了：选择'在职'会显示离职员工，选择'离职'会显示在职员工"
-      ],
-      "defect_level": "high"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["搜索功能异常：搜索框只能按部门搜索，无法按姓名'张三'搜索", "状态筛选逻辑反了：选择'在职'会显示离职员工，选择'离职'会显示在职员工"], "defect_level": "high" }
   },
   {
     "case_id": "CASE_018",
@@ -264,13 +159,744 @@
     "case_type": "显示缺陷",
     "case_category": "反例",
     "prompt": "请检测数据表格 V2 页面的统计信息：筛选出技术部员工后，'在职'人数统计是否正确？总薪资是否反映筛选后的数据？",
-    "ground_truth": {
-      "has_defect": true,
-      "defect_details": [
-        "在职人数统计显示的是离职人数，而非在职人数",
-        "总薪资统计使用的是全部员工数据，而非筛选后的员工数据"
-      ],
-      "defect_level": "medium"
-    }
+    "ground_truth": { "has_defect": true, "defect_details": ["在职人数统计显示的是离职人数，而非在职人数", "总薪资统计使用的是全部员工数据，而非筛选后的员工数据"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_019",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/form",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测表单验证页面是否正常工作：1. 页面标题'用户注册表单'是否显示；2. 用户名、邮箱、手机号等必填字段是否都有验证；3. 提交按钮是否显示为'提交注册'；4. 表单提交成功后是否有返回首页的链接",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_020",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/form-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测表单验证 V2 页面：1. 页面标题是否正确显示为'用户注册表单'；2. 邮箱输入框类型是否为email；3. 提交按钮文字是否为'提交注册'；4. 手机号和年龄字段是否有验证；5. 性别选项是否包含'其他'",
+    "ground_truth": { "has_defect": true, "defect_details": ["页面标题错误显示为'用户登录表单'而不是'用户注册表单'", "邮箱输入框类型错误设置为text", "提交按钮文字错误显示为'确认提交'", "手机号和年龄字段缺少验证", "性别选项缺少'其他'选项"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_021",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/form-v2",
+    "case_type": "安全缺陷",
+    "case_category": "反例",
+    "prompt": "请检测表单 V2 页面：服务条款链接文字是否正确显示为'服务条款'？是否必须同意条款才能提交？",
+    "ground_truth": { "has_defect": true, "defect_details": ["服务条款链接文字错误显示为'隐私协议'", "同意条款没有被强制验证，不勾选也能提交"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_022",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/search",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测搜索页面是否正常工作：1. 搜索框是否可以输入；2. 搜索按钮是否可以点击；3. 搜索结果是否正确显示；4. 搜索历史是否显示；5. 热门搜索标签是否显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_023",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/search-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测搜索 V2 页面：1. 搜索按钮是否可以点击；2. 搜索关键词'React'是否能找到相关结果；3. 清除按钮是否可用",
+    "ground_truth": { "has_defect": true, "defect_details": ["搜索按钮被禁用，无法进行搜索", "搜索结果列表为空，即使搜索'React'也找不到结果", "清除按钮无法点击"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_024",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/search-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测搜索 V2 页面：搜索结果的标题和描述是否正确显示？搜索高亮功能是否正常工作？",
+    "ground_truth": { "has_defect": true, "defect_details": ["搜索结果标题和描述显示反了", "搜索关键词没有被高亮显示"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_025",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/gallery",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测图片画廊页面是否正常工作：1. 页面标题'图片画廊'是否显示；2. 筛选按钮（全部、风景、城市、自然）是否可用；3. 点击图片是否能打开详情弹窗；4. 弹窗关闭按钮是否可用",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_026",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/gallery-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测图片画廊 V2 页面：1. 筛选功能是否正常工作（选择'风景'应该只显示风景图片）；2. 图片详情弹窗的关闭按钮是否可用；3. 页面底部是否有返回首页链接",
+    "ground_truth": { "has_defect": true, "defect_details": ["筛选功能逻辑错误，选择类别后显示的是其他类别的图片", "弹窗关闭按钮被禁用，无法关闭详情弹窗", "页面底部缺少返回首页的链接"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_027",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/gallery-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测图片画廊 V2 页面：图片的标题和描述是否正确显示？图片数量统计是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["图片标题和描述显示反了", "图片数量统计错误，显示的数量比实际多"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_028",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/modal",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测模态框页面是否正常工作：1. 点击'打开信息弹窗'是否能显示弹窗；2. 点击遮罩层或关闭按钮是否能关闭弹窗；3. 确认弹窗的'确认'和'关闭'按钮是否正常；4. 表单弹窗是否能正常提交",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_029",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/modal-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测模态框 V2 页面：1. 确认弹窗按钮是否可以点击；2. 点击遮罩层是否能关闭弹窗；3. 关闭按钮是否可用；4. 表单提交后弹窗是否关闭",
+    "ground_truth": { "has_defect": true, "defect_details": ["确认弹窗按钮被禁用，无法点击", "点击遮罩层不会关闭弹窗", "关闭按钮被禁用，无法点击", "表单提交后弹窗没有关闭"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_030",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/modal-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测模态框 V2 页面：弹窗标题是否正确？按钮文字和颜色是否符合预期？",
+    "ground_truth": { "has_defect": true, "defect_details": ["页面标题错误显示为'对话框组件'而不是'模态框组件'", "关闭按钮文字错误显示为'取消'", "取消和提交按钮位置颠倒"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_031",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tabs",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测标签页页面是否正常工作：1. 页面标题'标签页组件'是否显示；2. 点击'概览、功能特性、价格方案、常见问题'标签是否能切换内容；3. 默认是否显示第一个标签的内容；4. 是否有返回首页的链接",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_032",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tabs-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测标签页 V2 页面：1. 默认选中的标签是否是第一个（概览）；2. 点击'功能特性'标签是否能显示对应内容；3. 页面底部是否有返回首页链接",
+    "ground_truth": { "has_defect": true, "defect_details": ["默认选中的标签不是第一个，而是第三个'价格方案'", "功能特性标签内容显示错误，显示的是概览内容", "页面底部缺少返回首页的链接"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_033",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tabs-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测标签页 V2 页面的价格方案：基础版、专业版、企业版的价格分别是多少？请验证是否显示正确",
+    "ground_truth": { "has_defect": true, "defect_details": ["基础版价格错误显示为¥199/月（应为¥99/月）", "专业版价格错误显示为¥199/年（应为¥299/月）", "企业版名称错误显示为'商业版'（应为'企业版'）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_034",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/calendar",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测日历页面是否正常工作：1. 页面标题'日历组件'是否显示；2. 是否正确显示当前月份（2026年2月）；3. 上一月/下一月按钮是否可用；4. 点击日期是否能选中；5. 是否有返回首页的链接",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_035",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/calendar-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测日历 V2 页面：1. 是否正确显示2026年2月；2. 上一月按钮是否可用；3. 日期计算是否正确（2月应该有28天）",
+    "ground_truth": { "has_defect": true, "defect_details": ["默认显示错误月份（显示3月而不是2月）", "上一月按钮被禁用，无法查看上月", "日期计算错误，2月只显示到27号"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_036",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/calendar-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测日历 V2 页面：星期标题的顺序是否正确（应该是日一二三四五六）？年月显示格式是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["星期标题顺序错误（显示为一二三四五六日）", "年月显示格式错误（显示为'二月 2026'而不是'2026年 二月'）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_037",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/dropdown",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测下拉菜单页面是否正常工作：1. 点击下拉框是否能展开选项；2. 选择城市后下拉框是否显示选中值；3. 点击页面其他区域是否能关闭下拉菜单",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_038",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/dropdown-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测下拉菜单 V2 页面：1. 选择选项后下拉菜单是否自动关闭；2. 点击页面其他区域是否能关闭下拉菜单；3. 选中的值是否正确显示",
+    "ground_truth": { "has_defect": true, "defect_details": ["选择选项后下拉菜单不会自动关闭", "点击页面其他区域无法关闭下拉菜单", "选中值显示错误（显示value而不是label）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_039",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/dropdown-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测下拉菜单 V2 页面：标签文字是否正确显示为'选择城市'？占位符文字是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["标签文字错误显示为'选择地区'而不是'选择城市'", "占位符文字错误显示为'请选择地区...'"], "defect_level": "low" }
+  },
+  {
+    "case_id": "CASE_040",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/progress",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测进度条页面是否正常工作：1. 点击'开始'按钮进度条是否正常增长；2. 进度百分比是否正确显示；3. 进度条颜色是否随进度变化（低进度红色、中进度黄色、高进度绿色）；4. 圆形进度条是否正常显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_041",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/progress-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测进度条 V2 页面：1. 进度是否能到达100%；2. 进度完成后是否自动停止；3. 重置按钮是否可用",
+    "ground_truth": { "has_defect": true, "defect_details": ["进度会一直增加超过100%", "进度完成后不会自动停止", "重置按钮在运行中仍然可以点击"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_042",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/progress-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测进度条 V2 页面：进度条颜色是否正确（低于30%应为红色，30-70%应为黄色，高于70%应为绿色）？进度百分比显示是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["进度条颜色逻辑错误（低于30%显示绿色，高于70%显示黄色）", "进度百分比显示错误（显示的是实际值的一半）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_043",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/notification",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测通知消息页面是否正常工作：1. 点击'成功通知'等按钮是否能显示对应通知；2. 通知是否5秒后自动消失；3. 点击关闭按钮是否能立即关闭通知；4. 清除全部按钮是否可用",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_044",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/notification-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测通知消息 V2 页面：1. 通知是否自动消失；2. 关闭按钮是否可用；3. 清除全部按钮是否正常工作",
+    "ground_truth": { "has_defect": true, "defect_details": ["通知不会自动消失", "关闭按钮被禁用，无法点击", "清除全部按钮没有实际功能"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_045",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/notification-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测通知消息 V2 页面：通知的颜色和图标是否对应正确类型（成功-绿色、错误-红色、警告-黄色、信息-蓝色）？",
+    "ground_truth": { "has_defect": true, "defect_details": ["通知颜色和图标与类型不匹配（成功通知显示红色和错误图标）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_046",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/rating",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测评分页面是否正常工作：1. 点击星星是否能给出对应评分；2. 鼠标悬停时星星是否高亮；3. 评分分布图表是否正确显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_047",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/rating-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测评分 V2 页面：1. 点击星星是否能正常评分；2. 半星评分是否正常显示",
+    "ground_truth": { "has_defect": true, "defect_details": ["评分逻辑错误（显示的评分与实际选择相反）", "半星评分显示不正确（两个选项都显示为实心星）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_048",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/rating-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测评分 V2 页面：星星颜色是否正确（选中应为黄色，未选中应为灰色）？平均评分显示是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["星星颜色逻辑错误（选中显示灰色，未选中显示黄色）", "平均评分显示错误（显示2.5星而不是4.5星）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_049",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/slider",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测滑块页面是否正常工作：1. 拖动滑块数值是否正常变化；2. 音量控制滑块是否显示正确的音量图标；3. 范围滑块的最小值和最大值是否能分别调整",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_050",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/slider-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测滑块 V2 页面：1. 拖动滑块数值是否更新；2. 亮度调节滑块是否可用；3. 范围滑块的最小值是否能小于最大值",
+    "ground_truth": { "has_defect": true, "defect_details": ["滑块拖动时数值不更新", "亮度调节滑块被禁用，无法使用", "范围滑块允许最小值大于最大值"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_051",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/slider-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测滑块 V2 页面：音量图标是否正确随音量值变化？亮度预览是否随滑块值正确变化？",
+    "ground_truth": { "has_defect": true, "defect_details": ["音量图标显示逻辑错误（大于50%显示静音图标）", "亮度预览计算错误（越暗显示越亮）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_052",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/switch",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测开关页面是否正常工作：1. 点击开关是否能切换开关状态；2. Wi-Fi、蓝牙等开关状态是否正确显示；3. 开关动画是否正常",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_053",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/switch-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测开关 V2 页面：1. Wi-Fi开关是否可以点击切换；2. 蓝牙开关是否可用；3. 飞行模式开启时是否会自动关闭Wi-Fi和蓝牙",
+    "ground_truth": { "has_defect": true, "defect_details": ["Wi-Fi开关初始状态显示错误", "蓝牙开关被禁用，无法点击", "飞行模式开启时不会自动关闭Wi-Fi和蓝牙"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_054",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/switch-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测开关 V2 页面：开关状态文字是否正确（开启/关闭）？分组标题是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["Wi-Fi状态显示逻辑错误（开启显示为已关闭）", "分组标题错误（'系统设置'显示为'显示设置'）", "深色模式标签错误显示为'夜间模式'"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_055",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/breadcrumb",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测面包屑导航页面是否正常工作：1. 面包屑路径是否正确显示（首页 > 产品 > 电子产品 > 笔记本电脑）；2. 当前页面是否为不可点击的文本；3. 前面的路径是否为可点击链接",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_056",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/breadcrumb-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测面包屑导航 V2 页面：1. 当前页面是否为不可点击的文本；2. 链接是否可以正常点击",
+    "ground_truth": { "has_defect": true, "defect_details": ["当前页面显示为可点击链接（应为纯文本）", "链接文字颜色与背景对比度低，难以辨认"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_057",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/breadcrumb-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测面包屑导航 V2 页面：分隔符是否正确显示为'/'？当前页面内容标题是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["分隔符错误显示为'>'而不是'/'", "内容标题错误显示为'产品详情'而不是'当前页面内容'"], "defect_level": "low" }
+  },
+  {
+    "case_id": "CASE_058",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/pagination",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测分页页面是否正常工作：1. 当前页码是否正确高亮；2. 上一页/下一页按钮是否可用；3. 首页/末页按钮是否可用；4. 切换页面后内容是否正确更新",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_059",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/pagination-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测分页 V2 页面：1. 默认页码是否为1；2. 上一页按钮是否可用；3. 页码点击是否能正确跳转",
+    "ground_truth": { "has_defect": true, "defect_details": ["默认页码错误（显示第5页而不是第1页）", "首页按钮被禁用，无法跳转到首页", "页码高亮逻辑错误"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_060",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/pagination-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测分页 V2 页面：分页信息显示是否正确？末页按钮文字是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["分页信息显示格式错误（只显示页码而不是条数范围）", "末页按钮文字错误显示为'|›'而不是'›|'"], "defect_level": "low" }
+  },
+  {
+    "case_id": "CASE_061",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/loading",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测加载状态页面是否正常工作：1. 旋转加载器是否正常旋转；2. 脉冲加载动画是否正常；3. 骨架屏闪烁动画是否正常；4. 进度加载是否能到达100%",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_062",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/loading-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测加载状态 V2 页面：1. 进度加载是否能正常完成；2. 重新加载按钮是否可用；3. 加载完成后是否显示完成状态",
+    "ground_truth": { "has_defect": true, "defect_details": ["进度会一直增加超过100%", "重新加载按钮被禁用，无法点击", "加载完成后不显示完成状态"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_063",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/loading-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测加载状态 V2 页面：旋转方向是否正确？脉冲动画顺序是否正确？进度条颜色是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["旋转加载器旋转方向错误（逆时针而不是顺时针）", "脉冲动画顺序错误", "进度条颜色错误（显示为红色而不是蓝色）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_064",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tooltip",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测工具提示页面是否正常工作：1. 鼠标悬停在按钮上是否显示提示；2. 鼠标移开后提示是否消失；3. 上下左右四个方向的提示是否都正常显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_065",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tooltip-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测工具提示 V2 页面：1. 鼠标悬停时提示是否显示；2. 提示位置是否正确",
+    "ground_truth": { "has_defect": true, "defect_details": ["鼠标悬停时提示不显示（状态始终为false）", "提示位置错误（上方提示显示在下方，左侧提示显示在右侧）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_066",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tooltip-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测工具提示 V2 页面：图标按钮的提示内容是否正确？页面底部是否有返回首页链接？",
+    "ground_truth": { "has_defect": true, "defect_details": ["图标按钮提示内容与图标不匹配（复制图标显示删除提示）", "页面底部缺少返回首页的链接"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_067",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/accordion",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测折叠面板页面是否正常工作：1. 点击面板标题是否能展开/折叠内容；2. 展开时箭头是否向下旋转；3. 是否可以同时展开多个面板；4. 折叠动画是否正常",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_068",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/accordion-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测折叠面板 V2 页面：1. 点击面板是否能展开；2. 展开后是否能折叠；3. 面板内容是否完整显示",
+    "ground_truth": { "has_defect": true, "defect_details": ["点击面板后无法折叠（只能展开不能收起）", "面板内容显示不完整（只显示前20个字符）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_069",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/accordion-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测折叠面板 V2 页面：箭头图标是否会旋转？标题格式是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["箭头图标不会旋转", "标题格式错误（显示为序号+标题而不是只有标题）"], "defect_level": "low" }
+  },
+  {
+    "case_id": "CASE_070",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/steps",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测步骤条页面是否正常工作：1. 当前步骤是否正确高亮；2. 已完成步骤是否显示对勾；3. 上一步/下一步按钮是否可用；4. 步骤连接线是否正确显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_071",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/steps-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测步骤条 V2 页面：1. 默认步骤是否为第1步；2. 上一步按钮在第一页是否禁用；3. 下一步按钮在最后一页是否禁用；4. 步骤描述是否正确显示",
+    "ground_truth": { "has_defect": true, "defect_details": ["默认步骤错误（显示第2步而不是第1步）", "上一步按钮禁用逻辑错误", "下一步按钮在最后一页不禁用", "步骤描述显示错误步骤的内容"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_072",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/steps-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测步骤条 V2 页面：步骤标题高亮是否正确？步骤描述文字颜色是否正确？",
+    "ground_truth": { "has_defect": true, "defect_details": ["步骤标题高亮逻辑错误（已完成步骤不高亮）", "步骤描述文字颜色错误（与背景对比度低）"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_073",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tree",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测树形控件页面是否正常工作：1. 点击文件夹是否能展开/折叠；2. 文件夹和文件图标是否正确区分；3. 展开时箭头是否旋转；4. 文件/文件夹名称是否正确显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_074",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tree-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测树形控件 V2 页面：1. 文件夹默认是否展开；2. 点击文件夹是否能展开/折叠；3. 文件/文件夹名称是否正确显示",
+    "ground_truth": { "has_defect": true, "defect_details": ["文件夹默认折叠（应该默认展开）", "展开后无法折叠", "文件/文件夹名称显示错误（显示id而不是label）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_075",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tree-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测树形控件 V2 页面：文件夹和文件图标是否正确？箭头图标是否会旋转？",
+    "ground_truth": { "has_defect": true, "defect_details": ["文件夹和文件图标显示反了（文件夹显示文件图标，文件显示文件夹图标）", "箭头图标不会旋转"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_076",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/upload",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测文件上传页面是否正常工作：1. 点击上传区域是否能选择文件；2. 拖拽文件到上传区域是否能上传；3. 上传进度是否正常显示；4. 删除文件按钮是否可用",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_077",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/upload-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测文件上传 V2 页面：1. 拖拽文件是否能上传；2. 上传进度是否正确（从0到100）；3. 删除文件按钮是否只删除指定文件",
+    "ground_truth": { "has_defect": true, "defect_details": ["拖拽文件无法上传", "上传进度倒退（从100逐渐减少到0）", "删除按钮删除所有文件而不是指定文件"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_078",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/upload-v2",
+    "case_type": "显示缺陷",
+    "case_category": "反例",
+    "prompt": "请检测文件上传 V2 页面：文件大小格式是否正确？文件名和大小显示顺序是否正确？页面底部是否有返回首页链接？",
+    "ground_truth": { "has_defect": true, "defect_details": ["文件大小格式错误（显示为bytes而不是KB/MB）", "文件名和大小显示顺序颠倒", "页面底部缺少返回首页的链接"], "defect_level": "medium" }
+  },
+  {
+    "case_id": "CASE_079",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/select",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测选择器页面是否正常工作：1. 单选下拉框是否能正常选择；2. 多选框是否能正常选择多个选项；3. 禁用选项是否无法选择；4. 分组选择器是否正常显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_080",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/select-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测选择器 V2 页面：1. 单选下拉框是否可用；2. 多选是否能取消选择；3. 禁用选项是否真正被禁用",
+    "ground_truth": { "has_defect": true, "defect_details": ["单选下拉框被禁用，无法选择", "多选无法取消选择（只能添加不能移除）", "禁用选项没有被禁用，仍然可以选择"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_081",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/timepicker",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测时间选择器页面是否正常工作：1. 小时和分钟选择是否能正常设置；2. AM/PM切换是否正常；3. 快速选择按钮是否可用",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_082",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/timepicker-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测时间选择器 V2 页面：1. 小时选择范围是否正确（1-12）；2. 小时选择是否能正常改变；3. 快速选择按钮时间是否正确",
+    "ground_truth": { "has_defect": true, "defect_details": ["小时范围错误（显示0-11而不是1-12）", "小时选择无法改变（始终重置为09）", "快速选择按钮时间错误（显示08:00而不是09:00）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_083",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/menu",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测菜单页面是否正常工作：1. 点击有子菜单的项是否能展开/折叠；2. 点击菜单项是否能正确高亮；3. 子菜单缩进是否正确",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_084",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/menu-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测菜单 V2 页面：1. 默认子菜单是否展开；2. 点击后是否能折叠；3. 菜单项点击是否能高亮",
+    "ground_truth": { "has_defect": true, "defect_details": ["默认子菜单全部折叠（应该部分展开）", "点击后无法折叠（只能展开不能收起）", "菜单项高亮逻辑错误（使用!=而不是===）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_085",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/badge",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测徽章页面是否正常工作：1. 数字徽章是否正确显示；2. 超过99是否显示为'99+'；3. 状态点是否正确显示；4. 独立标签是否正常",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_086",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/badge-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测徽章 V2 页面：1. 关闭按钮是否可用；2. 徽章数字显示是否正确（超过99应该显示99+）",
+    "ground_truth": { "has_defect": true, "defect_details": ["关闭按钮不工作（过滤逻辑错误）", "徽章数字显示错误（超过99只显示99而不是99+）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_087",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/avatar",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测头像页面是否正常工作：1. 不同尺寸的头像是否正常显示；2. 状态指示器是否正确显示位置；3. 头像组是否正常显示；4. 文字头像首字母是否正确",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_088",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/avatar-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测头像 V2 页面：1. 尺寸参数是否正确生效；2. 状态指示器位置是否正确；3. 首字母提取是否正确",
+    "ground_truth": { "has_defect": true, "defect_details": ["尺寸参数错误（small显示为large，large显示为small）", "状态指示器位置错误（显示在左上角而不是右下角）", "首字母提取错误（提取最后两个字符而不是前两个）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_089",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/card",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测卡片页面是否正常工作：1. 卡片是否正常显示图片、标题、描述；2. 标签是否正常显示；3. 卡片悬停效果是否正常",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_090",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/card-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测卡片 V2 页面：1. 图片和内容顺序是否正确；2. 标题和描述顺序是否正确；3. 标签是否正常显示",
+    "ground_truth": { "has_defect": true, "defect_details": ["图片和内容顺序颠倒（内容在上图片在下）", "标题和描述顺序颠倒", "标签没有显示为标签样式"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_091",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/list",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测列表页面是否正常工作：1. 列表项是否正常显示；2. 完成项是否有删除线；3. 有序列表序号是否正确",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_092",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/list-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测列表 V2 页面：1. 列表序号是否从1开始；2. 复选框状态是否正确；3. 有序列表是否正确使用ol标签",
+    "ground_truth": { "has_defect": true, "defect_details": ["列表序号错误（从0开始而不是1）", "复选框状态显示错误（已完成显示为未完成）", "有序列表错误使用ul标签"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_093",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/timeline",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测时间轴页面是否正常工作：1. 时间节点颜色是否正确（已完成绿色、进行中蓝色、待开始灰色）；2. 时间线连接线是否正确显示；3. 日期和状态是否正确显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_094",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/timeline-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测时间轴 V2 页面：1. 时间节点颜色是否正确；2. 完成状态判断是否正确；3. 步骤描述是否正确显示",
+    "ground_truth": { "has_defect": true, "defect_details": ["时间节点颜色显示错误（已完成显示灰色，待开始显示绿色）", "完成状态判断逻辑错误", "步骤描述显示错误步骤的内容"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_095",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tag",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测标签页面是否正常工作：1. 添加标签功能是否正常；2. 删除标签功能是否正常；3. 重复标签是否能被阻止；4. 不同样式标签是否正常显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_096",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/tag-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测标签 V2 页面：1. 输入框输入是否能正常显示；2. 添加按钮是否可用；3. 重复标签是否能被添加",
+    "ground_truth": { "has_defect": true, "defect_details": ["输入框无法输入（onChange重置为空）", "添加按钮被禁用", "重复标签可以被添加（没有去重）"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_097",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/alert",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测警告提示页面是否正常工作：1. 不同类型警告的颜色和图标是否正确；2. 关闭按钮是否可用；3. 警告内容是否正确显示",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_098",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/alert-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测警告提示 V2 页面：1. 关闭按钮是否可用；2. 警告类型和图标是否匹配；3. 标题和内容顺序是否正确",
+    "ground_truth": { "has_defect": true, "defect_details": ["关闭按钮被禁用", "警告类型和图标不匹配（成功显示错误图标）", "标题和内容顺序颠倒"], "defect_level": "high" }
+  },
+  {
+    "case_id": "CASE_099",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/skeleton",
+    "case_type": "功能缺陷",
+    "case_category": "正例",
+    "prompt": "请检测骨架屏页面是否正常工作：1. 骨架屏闪烁动画是否正常；2. 不同布局的骨架屏是否正常显示；3. 头像、标题、段落等形状是否正确",
+    "ground_truth": { "has_defect": false, "defect_details": [], "defect_level": null }
+  },
+  {
+    "case_id": "CASE_100",
+    "ui_scene_id": "SCENE_001",
+    "route_path": "/skeleton-v2",
+    "case_type": "功能缺陷",
+    "case_category": "反例",
+    "prompt": "请检测骨架屏 V2 页面：1. 骨架屏动画是否正常；2. 头像位置是否正确；3. 列表项数量是否正确",
+    "ground_truth": { "has_defect": true, "defect_details": ["骨架屏没有动画（静态显示）", "头像位置错误（显示在右侧而不是左侧）", "列表项数量错误（显示2个而不是4个）"], "defect_level": "medium" }
   }
 ]

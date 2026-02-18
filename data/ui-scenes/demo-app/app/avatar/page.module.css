@@ -1,0 +1,170 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.avatarContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.avatarSection {
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.avatarRow {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.avatarWrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.avatarWrapper.small {
+  width: 32px;
+  height: 32px;
+}
+
+.avatarWrapper.medium {
+  width: 48px;
+  height: 48px;
+}
+
+.avatarWrapper.large {
+  width: 64px;
+  height: 64px;
+}
+
+.avatarImage,
+.avatarFallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatarFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.avatarWrapper.small .avatarFallback {
+  font-size: 0.7rem;
+}
+
+.avatarWrapper.large .avatarFallback {
+  font-size: 1.2rem;
+}
+
+.status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #1a1a1a;
+}
+
+.status.online {
+  background-color: #51cf66;
+}
+
+.status.offline {
+  background-color: #888;
+}
+
+.status.busy {
+  background-color: #ff6b6b;
+}
+
+.status.away {
+  background-color: #ffd43b;
+}
+
+.avatarGroup {
+  align-items: center;
+}
+
+.avatarGroup .avatarWrapper {
+  margin-left: -10px;
+  border: 2px solid #1a1a1a;
+}
+
+.avatarGroup .avatarWrapper:first-child {
+  margin-left: 0;
+}
+
+.avatarMore {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #888;
+  margin-left: -10px;
+  border: 2px solid #1a1a1a;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .status {
+    border-color: white;
+  }
+
+  .avatarGroup .avatarWrapper {
+    border-color: white;
+  }
+
+  .avatarMore {
+    background-color: #eee;
+    border-color: white;
+  }
+}

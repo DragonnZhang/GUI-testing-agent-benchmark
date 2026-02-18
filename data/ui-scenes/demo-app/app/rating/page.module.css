@@ -1,0 +1,146 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.ratingContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.ratingSection {
+  text-align: center;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.starButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: transform 0.2s;
+}
+
+.starButton:hover {
+  transform: scale(1.2);
+}
+
+.star {
+  font-size: 2.5rem;
+  transition: color 0.2s;
+}
+
+.halfStarButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  padding: 0.125rem;
+  transition: transform 0.2s;
+}
+
+.halfStarButton:hover {
+  transform: scale(1.2);
+}
+
+.ratingText {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: #888;
+}
+
+.ratingDistribution {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.distributionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.distributionLabel {
+  width: 40px;
+  font-size: 0.85rem;
+  color: #888;
+  text-align: right;
+}
+
+.distributionBar {
+  flex: 1;
+  height: 8px;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.distributionFill {
+  height: 100%;
+  background-color: #ffd43b;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.distributionCount {
+  width: 40px;
+  font-size: 0.85rem;
+  color: #888;
+  text-align: left;
+}
+
+.averageRating {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #ffd43b;
+  font-weight: bold;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .distributionBar {
+    background-color: #e0e0e0;
+  }
+}

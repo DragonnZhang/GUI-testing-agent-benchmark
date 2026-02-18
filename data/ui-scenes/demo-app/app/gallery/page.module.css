@@ -1,0 +1,213 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.filterBar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  background-color: #2a2a2a;
+  color: #888;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.filterButton:hover {
+  background-color: #333;
+}
+
+.filterButtonActive {
+  background-color: #646cff;
+  color: white;
+}
+
+.countText {
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.galleryCard {
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.galleryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+}
+
+.cardContent {
+  padding: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.cardDescription {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.cardCategory {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  background-color: #646cff;
+  color: white;
+  border-radius: 12px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+.modalContent {
+  background-color: #2a2a2a;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modalClose:hover {
+  color: white;
+}
+
+.modalImage {
+  font-size: 6rem;
+  margin-bottom: 1rem;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modalDescription {
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.modalCategory {
+  display: inline-block;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  background-color: #646cff;
+  color: white;
+  border-radius: 16px;
+}
+
+.footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .filterButton {
+    background-color: #eee;
+    color: #666;
+  }
+
+  .filterButton:hover {
+    background-color: #ddd;
+  }
+
+  .galleryCard {
+    background-color: #f5f5f5;
+  }
+
+  .imagePlaceholder {
+    background: linear-gradient(135deg, #e0e0e0 0%, #f0f0f0 100%);
+  }
+
+  .modalContent {
+    background-color: white;
+  }
+
+  .footer {
+    border-top-color: #ddd;
+  }
+}

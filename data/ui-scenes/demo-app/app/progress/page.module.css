@@ -1,0 +1,234 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.progressSection {
+  width: 100%;
+  margin-bottom: 2.5rem;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.progressBar {
+  width: 100%;
+  height: 12px;
+  background-color: #2a2a2a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.progressInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.progressText {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.progressStatus {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.circularProgress {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.circularSvg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circularFill {
+  transition: stroke-dasharray 0.3s ease, stroke 0.3s ease;
+}
+
+.circularText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.75rem;
+  font-weight: bold;
+}
+
+.stepsProgress {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 60%;
+  width: 80%;
+  height: 2px;
+  background-color: #333;
+}
+
+.stepCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #888;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.stepCircleActive {
+  background-color: #646cff;
+  color: white;
+}
+
+.stepCircleCurrent {
+  box-shadow: 0 0 0 4px #646cff40;
+}
+
+.stepLabel {
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+}
+
+.stepLabelActive {
+  color: #e0e0e0;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.actionButton {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  background-color: #646cff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.actionButton:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.actionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.resetButton {
+  background-color: #444;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.backLink {
+  color: #646cff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: light) {
+  .progressBar {
+    background-color: #e0e0e0;
+  }
+
+  .step:not(:last-child)::after {
+    background-color: #ddd;
+  }
+
+  .stepCircle {
+    background-color: #e0e0e0;
+    color: #666;
+  }
+
+  .stepLabel {
+    color: #888;
+  }
+
+  .stepLabelActive {
+    color: #333;
+  }
+
+  .resetButton {
+    background-color: #ccc;
+    color: #333;
+  }
+}
+
+@media (max-width: 480px) {
+  .stepsProgress {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .step {
+    flex: 1 1 40%;
+  }
+
+  .step:not(:last-child)::after {
+    display: none;
+  }
+}
