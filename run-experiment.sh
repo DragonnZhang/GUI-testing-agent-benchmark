@@ -67,12 +67,56 @@ get_state() {
     fi
 }
 
+# 将 CASE_001-CASE_025 这类范围转换成 --filter-cases 需要的逗号分隔 ID 列表
+expand_case_filter() {
+    local raw_filter=$1
+    local expanded=()
+
+    IFS=',' read -ra parts <<< "$raw_filter"
+
+    for part in "${parts[@]}"; do
+        part=$(echo "$part" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+        if [[ -z "$part" ]]; then
+            continue
+        fi
+
+        if [[ "$part" =~ ^CASE_([0-9]{3})-CASE_([0-9]{3})$ ]]; then
+            local start_num=$((10#${BASH_REMATCH[1]}))
+            local end_num=$((10#${BASH_REMATCH[2]}))
+
+            if (( start_num > end_num )); then
+                log_error "无效范围: $part (起始编号大于结束编号)"
+                return 1
+            fi
+
+            local i
+            for ((i = start_num; i <= end_num; i++)); do
+                expanded+=("CASE_$(printf '%03d' "$i")")
+            done
+        elif [[ "$part" =~ ^CASE_[0-9]{3}$ ]]; then
+            expanded+=("$part")
+        else
+            log_error "无法识别的 case 过滤格式: $part"
+            return 1
+        fi
+    done
+
+    if [ ${#expanded[@]} -eq 0 ]; then
+        log_error "case 过滤条件为空: $raw_filter"
+        return 1
+    fi
+
+    (IFS=','; echo "${expanded[*]}")
+}
+
 # 运行单个 agent 的函数
 run_agent() {
     local agent=$1
     local cases=$2
     local phase=$3
     local round=$4
+    local expanded_cases
 
     local run_name="${phase}-${agent}"
     if [ -n "$round" ]; then
@@ -80,10 +124,15 @@ run_agent() {
     fi
     run_name="${run_name}-$(date +%Y%m%d-%H%M%S)"
 
+    if ! expanded_cases=$(expand_case_filter "$cases"); then
+        log_error "无法运行 $run_name: case 过滤条件无效"
+        return 1
+    fi
+
     log "运行: $run_name (Agent: $agent, Cases: $cases)"
 
     # 执行测试
-    if pnpm uibench run -a "$agent" --filter-cases "$cases" 2>&1 | tee -a "$LOG_FILE"; then
+    if pnpm uibench run -a "$agent" --filter-cases "$expanded_cases" 2>&1 | tee -a "$LOG_FILE"; then
         log "✅ 完成: $run_name"
 
         # 找到最新的 run 目录
