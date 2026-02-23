@@ -20,7 +20,7 @@ NEW_CASES="CASE_040-CASE_075"        # Group C: 零样本测试集
 ALL_CASES="CASE_001-CASE_075"
 
 # Agent 列表
-BASELINE_AGENTS="midscene browser-use"
+BASELINE_AGENTS="midscene browser-use auto-inspector"
 MEMORY_AGENT="midscene-memory"
 
 # 学习轮数
